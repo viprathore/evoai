@@ -1,0 +1,203 @@
+	<ul class="nav" id="menu">
+		<li id="dashboard">
+			<a href="http://evoai.tech/dashboard">
+				<i><img src="/webroot/frontend/images/icon-home.png"></i> 
+				<span class="collapse in hidden-xs">Dashboard</span>
+			</a>
+		</li>
+		<li id="wallet">
+			<%
+				if(beta_acces == 1)
+				{
+					%>
+						<a href="/wallet">
+							<i><img src="/webroot/frontend/images/icon-wallet.png"></i> 
+							<span class="collapse in hidden-xs">Wallet</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-wallet.png"></i> 
+							<span class="collapse in hidden-xs">Wallet</span>
+							<i class="pull-right"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>
+		</li>
+		<li id="live_trades">
+			<%
+				//if(beta_acces == 1)
+				if(Useremail == 'nicholas@tensai-solutions.co.uk' || Useremail == 'EVOAINETWORK@GMAIL.COM' || Useremail == 'bharatchhabra13@gmail.com' || Useremail == 'pavs94@gmail.com' || Useremail == 'sergeym610@gmail.com')
+				{
+					%>
+						<a href="/live_trades">
+							<i><img src="/webroot/frontend/images/icon-livetrade.png"></i> 
+							<span class="collapse in hidden-xs">Live trades</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-livetrade.png"></i> 
+							<span class="collapse in hidden-xs">Live trades</span>
+							<i class="pull-right"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>
+		</li>
+		<li id="evabot">
+			<%
+				if(beta_acces == 1)
+				{
+					%>
+						<a href="/evabot">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i>
+							<span class="collapse in hidden-xs">Evabot</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i>
+							<span class="collapse in hidden-xs">Evabot</span>
+							<i class="pull-right padlock-sec"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>					
+		</li>
+		<li id="evobot">
+			<%
+				//if(beta_acces == 2)
+				if(Useremail == 'nicholas@tensai-solutions.co.uk' || Useremail == 'EVOAINETWORK@GMAIL.COM' || Useremail == 'bharatchhabra13@gmail.com' || Useremail == 'pavs94@gmail.com' || Useremail == 'sergeym610@gmail.com')
+				{
+					%>
+						<a href="/evobot">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i> 
+							<span class="collapse in hidden-xs">Evobot</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i> 
+							<span class="collapse in hidden-xs">Evobot</span>
+							<i class="pull-right padlock-sec"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>						
+		</li>
+		<li id="eve">
+			<%
+				//if(beta_acces == 2)
+				if(Useremail == 'nicholas@tensai-solutions.co.uk' || Useremail == 'EVOAINETWORK@GMAIL.COM' || Useremail == 'bharatchhabra13@gmail.com' || Useremail == 'pavs94@gmail.com' || Useremail == 'sergeym610@gmail.com')
+				{
+					%>
+						<a href="/eve">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i>
+							<span class="collapse in hidden-xs">Eve</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-chart.png"></i>
+							<span class="collapse in hidden-xs">Eve</span>
+							<i class="pull-right padlock-sec"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>						
+		</li>
+		<li id="exchange">
+			<%
+				//if(beta_acces == 2)
+				if(Useremail == 'nicholas@tensai-solutions.co.uk' || Useremail == 'EVOAINETWORK@GMAIL.COM' || Useremail == 'bharatchhabra13@gmail.com' || Useremail == 'pavs94@gmail.com' || Useremail == 'sergeym610@gmail.com')
+				{
+					%>
+						<a href="/exchange">
+							<i><img src="/webroot/frontend/images/icon-exchange.png"></i> 
+							<span class="collapse in hidden-xs">Exchange</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/icon-exchange.png"></i> 
+							<span class="collapse in hidden-xs">Exchange</span>
+							<i class="pull-right"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>							
+		</li>
+		<li id="academy">
+			<%
+				if(beta_acces == 1)
+				{
+					%>
+						<a href="http://evoai.tech/academy">
+							<i><img src="/webroot/frontend/images/academy2.png"></i> 
+							<span class="collapse in hidden-xs">Academy</span>
+						</a>
+					<%
+				}
+				else
+				{
+					%>
+						<a href="#">
+							<i><img src="/webroot/frontend/images/academy2.png"></i> 
+							<span class="collapse in hidden-xs">Academy</span>
+							<i class="pull-right"><img src="/webroot/frontend/images/icon-padlock.png"></i>
+						</a>
+					<%
+				}
+			%>					
+		</li>
+		<li>
+			<a href="http://evoai.tech/profile">
+				<i><img src="/webroot/frontend/images/icon-profile.png"></i> 
+				<span class="collapse in hidden-xs">Profile</span>
+			</a>
+		</li>
+		<li id="support">
+			<a href="http://evoai.tech/support">
+				<i><img src="/webroot/frontend/images/icon-support.png"></i> 
+				<span class="collapse in hidden-xs">Support</span>
+			</a>
+		</li>
+		<li id="announcements">
+			<a href="http://evoai.tech/clientAnnouncements">
+				<i><img src="/webroot/frontend/images/icon-announce.png"></i> 
+				<span class="collapse in hidden-xs">Announcements</span>
+			</a>
+		</li>                
+		<li id="myreferrals">
+			<a href="http://evoai.tech/myreferrals">
+				<i><img src="/webroot/frontend/images/icon-referral.png"></i> 
+				<span class="collapse in hidden-xs">My Referrals</span>
+			</a>
+		</li>             
+		<li id="logout" class="hidden">
+			<a href="/logout">
+				<i><img src="/webroot/frontend/images/login_new.png"></i> 
+				<span class="collapse in hidden-xs">Logout</span>
+			</a>
+		</li>
+	</ul>

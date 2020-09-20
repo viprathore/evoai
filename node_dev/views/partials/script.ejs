@@ -1,0 +1,377 @@
+<script src="./javascripts/menu.js"></script>
+<script src="./javascripts/jquery.dataTables.js"></script>
+<script src="./javascripts/dataTables.bootstrap.js"></script>
+<script type='text/javascript'>		
+	/* textCopy  */
+	function containtCopy()
+	{ 
+		var copyText = document.getElementById("referralLink");
+		copyText.select();
+		document.execCommand("copy");
+	}
+		
+	(function() { 
+		var widget_id = 'XPJLnGe3uN';
+		var d = document;
+		var w = window;
+
+		function l() {
+			typeWriter1();
+			var s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.async = true;
+			s.src = '//code.jivosite.com/script/widget/' + widget_id;
+			var ss = document.getElementsByTagName('script')[0];
+			ss.parentNode.insertBefore(s, ss);
+		}
+		if (d.readyState == 'complete') { l(); } else { if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } }
+	})();
+
+	/* CharAt */
+	var i = 0;
+	var j = 0;
+	var txt = 'Evolution of Artificial Intelligence';
+	var txt2 = 'A revolutionary new platform fusing crypto trading and AI.';
+	var speed = 90;
+	var delay = 15000;
+
+	function typeWriter1() {
+		if (i == 0) {
+			document.getElementById("textShow").innerHTML = '';
+			document.getElementById("secondText").innerHTML = '';
+		}
+		if (i < txt.length) {
+			document.getElementById("textShow").innerHTML += txt.charAt(i);
+			i++;
+			setTimeout(typeWriter1, speed);
+		} else {
+			setTimeout(typeWriter2, delay);
+		}
+	}
+
+	function typeWriter2() {
+		if (i == txt.length) {
+			document.getElementById("textShow").innerHTML = 'Evolution of Artificial Intelligence';
+
+			if (j < txt2.length) {
+				document.getElementById("secondText").innerHTML += txt2.charAt(j);
+				j++;
+			} else {
+				i = 0;
+				j = 0;
+			}
+			setTimeout(typeWriter2, speed);
+		} else {
+			setTimeout(typeWriter1, delay);
+		}
+	}
+	
+	/* Try profit bar */
+	function getAmount_val()
+	{
+		var amount_value = $("#amount_value").val();
+		var daily_amount = $("#daily_amount").val();
+		var evoCycles_day = $("#evoCycles_day").val();
+		var weekly_amount = $("#weekly_amount").val();
+		//var last_amount = $("#last_amount").val();
+		var monthly_amount = $("#monthly_amount").val();
+		if(evoCycles_day == ''){
+			evoCycles_day = 1;
+		}
+		if(amount_value != ''){
+			$('#daily_amount').val(((evoCycles_day / 102) * amount_value).toFixed(10));
+			$('#weekly_amount').val(((evoCycles_day / 102) * amount_value * 7).toFixed(10));
+			$('#monthly_amount').val(((evoCycles_day / 102) * amount_value * 30).toFixed(10));
+		}
+	}
+</script>
+
+<script src="/webroot/frontend/js/jquery.countdown.js"></script>
+
+<script>
+    /*-------------------------------------------
+      CountDown
+    -------------------------------------------*/
+    $('.countdown-time').each(function () {
+        var endTime = $(this).data('time');
+        $(this).countdown(endTime, function (tm) {
+            $(this).html(tm.strftime('<span class="section_count"><span class="tcount days">%D:</span><span class="text">DAYS</span></span><span class="section_count"><span class="tcount hours">%H:</span><span class="text">HOURS</span></span><span class="section_count"><span class="tcount minutes">%M</span><span class="text">MINS</span></span>'));
+        });
+    });	
+</script>
+	
+<script src="/webroot/frontend/js/jquery.easing.min.js"></script>
+   
+<!-- Custom JavaScript for this theme -->
+<script src="/webroot/frontend/js/scrolling-nav.js"></script>
+
+<script>
+	function textCopy() {
+		var copyText = document.getElementById("walletAddress");
+		copyText.select();
+		document.execCommand("copy");
+	}		
+</script>
+
+<script src="/webroot/frontend/js/main.js"></script>
+
+<script src="/webroot/frontend/js/highlight.pack.js"></script>
+
+<!-- adding plugin javascript file -->
+<script src="/webroot/frontend/js/breaking-news-ticker.min.js"></script>
+<script type="text/javascript">		
+	hljs.initHighlightingOnLoad();
+	setTimeout(function(){
+	$('#priceTicker').breakingNews({
+			//effect: 'typography'
+		limit:4,
+		scrollSpeed : 2,				
+		});
+	}, 2000)
+		
+	$(document).ready(function () {
+		$('.btn-box > label > input').click(function () {
+			$('.btn-box > label > input:not(:checked)').parent().removeClass("selected");
+			$('.btn-box > label > input:checked').parent().addClass("selected");
+		});
+		$('.btn-box > label > input:checked').parent().addClass("selected");
+	});
+	
+	$('#evoaiVideo').hover(function toggleControls() {
+		if (this.hasAttribute("controls")) {
+			this.removeAttribute("controls")
+		} else {
+			this.setAttribute("controls", "controls")
+		}
+	})
+		
+	function copyTextAdd() {
+		var copyText = $(".walletAddress");
+		copyText.select();
+		document.execCommand("copy");
+	}
+		
+	function showValue1(newValue) { 
+    	document.getElementById("monday").innerHTML= newValue;
+	}
+
+	function changeRangeValue(val){
+		document.getElementById("range").value = isNaN(pparseFloat(val, 8)) ? 0 : parseFloat(val, 8);
+		showValue1(val);
+	}
+
+	function changeInputValue(val){
+		document.getElementById("number").value = isNaN(parseFloat(val, 8)) ? 0 : parseFloat(val, 8);
+		showValue1(val);
+	}
+	
+	var rangeSlider = function(){
+	var slider = $('.range-slider'),
+		range = $('.range-slider__range'),
+		value = $('.range-slider__value');
+		
+		slider.each(function(){
+			value.each(function(){
+				var value = $(this).prev().attr('value');
+				$(this).html(value);
+				//$(".arrow_val").val(value);
+			});
+			range.on('input', function(){
+				$(this).next(value).html(this.value);
+				$(".arrow_val").val(this.value);
+			});
+		});
+	};
+
+	rangeSlider();
+			
+	// Web3js initialization
+	web3script = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/baf22b6c2cd84003aa418a653eacecfa"));
+	var ABI = JSON.parse('[{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_who","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"}]');
+	var oraclizeABI = JSON.parse('[{"constant":true,"inputs":[],"name":"getEthPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]');
+
+	var crowdsaleAddress = "0x5824D62F4f3C875C906F4E16d488BeD05a87A2Ea";
+	var tokenAddress = "0x5dE805154A24Cb824Ea70F9025527f35FaCD73a1";
+	var oraclizeAddress = "0x97D8061df1370cBAc097ede6a10CA10714c7774a";
+
+	var tokenInstance = web3script.eth.contract(ABI).at(tokenAddress);
+	var oraclizeInstance = web3script.eth.contract(oraclizeABI).at(oraclizeAddress);
+	
+	var usd_price = '';
+	var evot_val = '10';
+	var bonus_val = '0.55';
+
+	// Getting USD price from oraclize
+	(function(){
+		oraclizeInstance.getEthPrice(function(err, res){
+			usd_price = res / 100;
+			$(".liveUSD_price").text(usd_price);
+			userAccountDetails(usd_price);
+		});
+	})();
+	
+	$('.number-only').keypress(function(event) {
+		if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+			event.preventDefault();
+		}
+	});
+
+	/* USD and evoai value in at header */
+	function userAccountDetails(usd_price)
+	{
+		$.ajax({
+			url: 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x5dE805154A24Cb824Ea70F9025527f35FaCD73a1&address=<%= eth_add %>&tag=latest&apikey=XT1TNTQ6NWDKJDVB76FIGWQU2VAJHEKTYV',
+			type: 'POST',
+			dataType: 'json',
+			cache: false,
+			success: function(responce){ 
+				$(".liveETH_balance").text(responce.result);
+			}
+		});
+	}
+	
+	/* Etherscan */
+	function liveRate_ETHFromEtherscan()
+	{
+		$.ajax({
+			url: 'https://api.etherscan.io/api?module=stats&action=ethprice&apikey=XT1TNTQ6NWDKJDVB76FIGWQU2VAJHEKTYV',
+			type: 'POST',
+			dataType: 'json',
+			cache: false,
+			success: function(responce){
+				//$(".liveUSD_price").text(responce.result.ethusd);
+				userAccountDetails(responce.result.ethusd);
+			}
+		});
+	}
+	setInterval(function(){ liveRate_ETHFromEtherscan(); }, 3000);
+	liveRate_ETHFromEtherscan();	
+	
+	/* get_evoaiAmount */
+	function get_evoaiAmountETH()
+	{ 
+		var eth_amount_cal = $("#eth_amount_cal").val();
+		var usd_amt = (eth_amount_cal * usd_price).toFixed(2);
+		var evot_amt = (usd_amt / evot_val).toFixed(2);
+		$("#usd_amount_cal").val(usd_amt);
+		$("#evot_amount_cal").val(evot_amt);
+		$("#evot_value").text(evot_amt);
+		var evot_bonus = (evot_amt * bonus_val/100).toFixed(2);
+		$("#evot_bonus").text(evot_bonus);
+		$("#eth_text_val").text(eth_amount_cal);
+	}
+
+	function get_evoaiAmountUSD()
+	{
+		var usd_amount_cal = $("#usd_amount_cal").val();
+		eth_amt = (usd_amount_cal/usd_price).toFixed(5);			
+		$("#eth_amount_cal").val(eth_amt);
+		var evot_amt = (usd_amount_cal / evot_val).toFixed(2);
+		$("#evot_amount_cal").val(evot_amt);	
+		$("#evot_value").text(evot_amt);
+		var evot_bonus = (evot_amt * bonus_val/100).toFixed(2);
+		$("#evot_bonus").text(evot_bonus);
+		$("#eth_text_val").text(eth_amt);
+	}
+
+	function get_evoaiAmountEVOT()
+	{
+		var evot_amount_cal = $("#evot_amount_cal").val();
+		var usd_amt = (evot_amount_cal * evot_val).toFixed(2);
+		var eth_amt = (usd_amt / usd_price).toFixed(5);
+		$("#usd_amount_cal").val(usd_amt);	
+		$("#eth_amount_cal").val(eth_amt);
+		$("#eth_text_val").text(eth_amt);	
+		$("#evot_value").text(evot_amount_cal);
+	}
+
+	// Progress bar part
+	// var progressBar = $(".distribution__lines.distribution_line_custom_new"),
+	//     r = new web3.BigNumber(10).toPower(18),
+	//     crowdsaleTokens = 6800000, //tokens for crowdsale
+	//     tokensAvailable,
+	//     tokensSold,
+	//     tokensProcent;
+
+	// (function(){
+	//     tokenInstance.balanceOf(crowdsaleAddress, function(err, res){
+	//         tokensAvailable = parseInt(res.div(r).valueOf())
+	//         tokensSold = crowdsaleTokens - tokensAvailable;
+	//         tokensProcent =  Math.round((tokensSold * 100) / crowdsaleTokens);
+	//         progressBar.append("<span id='tokens-sold'>"+tokensSold +'</span>');
+	//         progressBar.css("background", "linear-gradient(to right, rgb(118, 56, 129)" + tokensProcent + "%, rgb(209, 198, 218)" + (tokensProcent + 10) + "%, rgb(0, 0, 0) 70%");
+	//         $("#tokens-sold").css({"position" : "absolute", "top" : "0", "left": tokensProcent + 2 + "%"});
+	//     });
+	// })();
+    
+    function preloader(){
+		//Preloader
+		$(window).on("load", function() {
+		preloaderFadeOutTime = 2000;
+		function hidePreloader() {
+		var preloader = $('.spinner-wrapper');
+		preloader.fadeOut(preloaderFadeOutTime);
+		}
+			hidePreloader();
+		});
+    }
+
+</script>
+<script>
+	/*Menu-toggle*/
+	/* off-canvas sidebar toggle */
+	$('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+		$('.collapse').toggleClass('in').toggleClass('hidden-xs').toggleClass('visible-xs');
+	});
+	
+	/* Try profit bar */
+	function getAmount_val()
+	{
+		var amount_value = $("#amount_value").val();
+		var daily_amount = $("#daily_amount").val();
+		var evoCycles_day = $("#evoCycles_day").val();
+		var weekly_amount = $("#weekly_amount").val();
+		//var last_amount = $("#last_amount").val();
+		var monthly_amount = $("#monthly_amount").val();
+		if(evoCycles_day == ''){
+			evoCycles_day = 1;
+		}
+		if(amount_value != ''){
+			$('#daily_amount').val(((evoCycles_day / 102) * amount_value).toFixed(10));
+			$('#weekly_amount').val(((evoCycles_day / 102) * amount_value * 7).toFixed(10));
+			$('#monthly_amount').val(((evoCycles_day / 102) * amount_value * 30).toFixed(10));
+		}
+	}
+
+
+	// $.ajax({
+	// 	url: 'http://api.etherscan.io/api?module=account&action=txlist&address=0x6705120db9fb682dec120cdecc8220385d25fc50&startblock=0&endblock=latest&sort=asc&apikey=XT1TNTQ6NWDKJDVB76FIGWQU2VAJHEKTYV',
+	// 	type: 'POST',
+	// 	dataType: 'json',
+	// 	cache: false,
+	// 	success: function(response){ 
+	// 		console.log(response);
+	// 	}
+	// });
+	
+	
+	// var web3 = new Web3(Web3.givenProvider || 'wss://mainnet.infura.io/ws');
+
+// var subscription1 = web3.eth.subscribe('logs', {
+//     address: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d'
+// }, function (error, result) {
+// })
+// .on("data", function (log) {
+//     //console.log(log);
+//     web3.eth.getTransaction(log.transactionHash)
+//         .then(function (transaction) {
+//             //console.log(transaction)
+//             if (transaction.value > 0) {
+//                 console.log("Ether sent from " + transaction.from + " to " + transaction.to)
+//             }
+//         })
+// })
+
+
+</script>

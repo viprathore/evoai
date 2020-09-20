@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<% include partials/head %>
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+<!--header -->
+<% include partials/header %>
+<!--//-->
+<section class="dashboard-section">
+  <div class="wrapper">
+    <div class="row row-offcanvas row-offcanvas-left"> 
+      <!-- sidebar -->
+      <div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+        <% include partials/sidebar %>
+      </div>
+      <!-- /sidebar --> 
+      <!-- main right col -->
+      <div class="column col-sm-9 col-xs-12 main-dashcontent" id="main">
+        <h2> <span class="collapse in hidden-xs"><%= page %></span></h2>
+        <!-- deposit, withdraw Modal -->
+        <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="inputModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span> </button>
+              </div>
+              <div class="modal-body" style="color:black">
+                <div class="form-group" id="inputModalBodyForm">
+                  <input class="form-control" type="number" style="color:black" id="deposit-token-input">
+                  <input class="form-control" type="number" style="color:black" id="eth_value">
+                </div>
+                <div id="deposit_withdraw_error_msg"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn_ok" style="width: 17%;height: 37px;border-radius: 10px;">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Modal --> 
+        
+        <!-- Wallet address -->
+		<div class="row clearfix">
+			<div class="col-md-12">
+				<div class="div-border-radius mb-30 mt-30 box-shadow text-center font-23">
+				<div class = "row clearfix">
+          <div class="col-md-4 col-sm-2 col-xs-12 mb-20 mt-20"> <span class="text-nomell">Your Wallet Address:</span> </div>
+          <div class="col-md-8 col-sm-2 col-xs-12 mb-20 mt-20"> <span class="text-nomell" id="wallet_addr"></span> </div>
+        </div>
+					
+				</div>
+			</div>
+		</div>
+		
+		
+		
+        
+        <!---->
+        <div class="row clearfix">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box-shadow dash-box ">
+              <h2 class="font-purple text-center">EVOT</h2>
+              <h2 id="my_token_balance" class="text-center">0</h2>
+              <div class="row clearfix trans-sec">
+                <div class="form-group mt-10">
+                  <div class="col-md-6 col-sm-6"> <a class="btn-buy w-100" onclick="depositEvot()">DEPOSIT</a> </div>
+                  <div class="col-md-6 col-sm-6"> <a class="btn-buy w-100" onclick="withdrawEvot()">WITHDRAW</a> </div>
+                </div>
+              </div>
+              <div class = "middle-line mb-20"></div>
+              <div class="row clearfix">
+              	<div class = "col-md-5 text-left border-0 mt-10"> <span style="cursor:pointer;">AMOUNT</span> </div>
+              <div class = "col-md-7 border-0"> 
+                <!-- <input type = "text" readonly value = "EVOT" class = "white-bkground text-right height-35"> -->
+                <form class="form-inline">
+                  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <input type="number" class="form-control" id="transfer_evot" placeholder="0.0000000000">
+                    <div class="input-group-addon">EVOT</div>
+                  </div>
+                </form>
+              </div>
+              </div>
+              <div class="row clearfix">
+              <div class = "col-md-5 text-left border-0 mt-10"> <span style="cursor:pointer; line-height: 45px;" class = "mt-20">MOVE TO</span> </div>
+              <div class = "col-md-7 border-0">
+                <select class="white-bkground height-35 mt-20 text-center" id="tokentransfer_target">
+                  <!-- <option value="0">Select One</option> -->
+                  <option value="1">EVABOT</option>
+                  <!--<option value="2">Exchange</option>-->
+                </select>
+              </div>
+              </div>
+              <div class="row clearfix">
+              <div class="col-md-12 mb-25 mt-20 text-center"> 
+			  	<button class="btn-buy" onclick="transferEVOT()">TRANSFER</button>  
+			  </div>
+              </div>  
+            </div>
+            <!-- dash box //-->
+            
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box-shadow dash-box">
+              <h2 class="font-purple text-center">ETH</h2>
+              <h2 id="my_ether_balance" class="text-center">0</h2>
+              <div class="row clearfix trans-sec">
+                <div class="form-group mt-10">
+                  <div class="col-md-6 col-sm-6"> <a class="btn-buy w-100" onclick="depositEth()">DEPOSIT</a> </div>
+                  <div class="col-md-6 col-sm-6"> <a class="btn-buy w-100" onclick="withrawEth()">WITHDRAW</a> </div>
+                </div>
+              </div>
+              <div class = "middle-line mb-20"></div>
+              <div class="row clearfix">
+              <div class = "col-md-5 text-left border-0 mt-10"> <span style="cursor:pointer;">AMOUNT</span> </div>
+              <div class = "col-md-7 border-0"> 
+                <!-- <input type = "text" readonly value = "ETH" class = "white-bkground text-right height-35"> -->
+                <form class="form-inline">
+                  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <input type="number" class="form-control" id="ether_to_amount" placeholder="0.0000000000">
+                    <div class="input-group-addon">E T H </div>
+                  </div>
+                </form>
+              </div>
+              </div>
+              
+              <div class="row clearfix">
+              <div class = "col-md-5 text-left border-0 mt-10"> <span style="cursor:pointer; line-height: 45px;" class = "mt-20">MOVE TO</span> </div>
+              <div class = "col-md-7 border-0">
+                <select class="white-bkground height-35 mt-20" id="ether_to">
+                  <option value="0xF3aDCDBA93Fb17c332a161797061983B92319398">Exchange</option>
+                </select>
+              </div>
+
+              </div>
+              
+              <div class="row clearfix">
+              <div class="col-md-12 mb-25 mt-20  text-center"> 
+			  	<button class="btn-buy" onclick="transferETHClick()">TRANSFER</button> 
+			  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+		<div id="walletcontrols" style="display:none">
+			<!--<button style="color:black" onclick="triggerStartCycle()">Start Cycle</button>-->
+			<!--<button style="color:black" onclick="withdrawAllTokens(961.5 * 10**18)">WithdrawToken</button>-->
+			<button style="color:black" onclick="setTokenAddress()">SetToken Address</button>
+			<!--<button style="color:black" onclick="getReadyTimeClick()">Get ReadyTime</button>-->
+			<button style="color:black" onclick="setTokenFee()">Set Token Fee</button>
+			<button style="color:black" onclick="setETHFee()">Set ETH Fee</button>
+			<button style="color:black" onclick="setEvabotContractAddress()">Set Evabot Address</button>
+			<button style="color:black" onclick="changeAdmin()">Change Admin</button>
+		</div>
+        <!--//--> 
+      </div>
+    </div>
+  </div>
+</section>
+<% 
+  var wallet_results = Array();
+  for (var i = 0; i < wallet_result.length; i++) {
+    wallet_results[i] = wallet_result[i].user_address;
+  }
+%>
+<% include partials/footer %>
+<% include partials/script %>
+<% include partials/metamask %>
+<% include partials/config %>
+<% include partials/wallet_contract_provider %>
+
+<script>
+    preloader();
+    var addresses = '<%= wallet_results %>';
+		var whitelists = addresses.split(",");
+	</script>
+</body>
+</html>

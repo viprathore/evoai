@@ -1,0 +1,88 @@
+<script>
+var Web3 = require('web3');
+// var web3_wrapper_1 = require('web3-provider-engine');
+var _ = require('lodash');
+console.log(_);
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            await ethereum.enable();
+            userAddress = web3.eth.accounts[0];
+            web3.eth.defaultAccount = userAddress;        
+            // const FeeContract = web3.eth.contract(fee_contract_abi);
+            // feeInstance = FeeContract.at(fee_contract_address);
+        } catch(e) {
+            console.log(e);
+        }
+    } else if(window.web3) {
+        window.web3 = new Web3(web3.currentProvider);
+        userAddress = web3.eth.accounts[0];
+        web3.eth.defaultAccount = userAddress;        
+        
+        // const FeeContract = web3.eth.contract(fee_contract_abi);
+        // feeInstance = FeeContract.at(fee_contract_address);
+    }
+});
+
+var evabotContractInstance = '';
+var userAddress = '';
+
+// init to interact with contract
+try {
+    userAddress = web3.eth.accounts[0];
+    web3.eth.defaultAccount = userAddress;        
+    // const FeeContract = web3.eth.contract(fee_contract_abi);
+    // feeInstance = FeeContract.at(fee_contract_address);
+} catch (e) {
+    console.log('Web3 does not exist');
+}
+
+async function sumitBuyOrder() {
+    
+    // $.ajax({
+    //     url: 'http://localhost:7000/test',
+    //     type: 'POST',
+    //     success: function(data) {
+    //         console.log(data);
+    //     },
+    //     error: function(e) {
+    //         console.log(e);
+    //     }
+    // })
+
+    var injectedProviderIfExists = window.ethereum;
+    if (!_.isUndefined(injectedProviderIfExists)) {
+        if (!_.isUndefined(injectedProviderIfExists.enable)) {
+            try {
+                await injectedProviderIfExists.enable();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    } else {
+        var injectedWeb3IfExists = window.web3;
+        if (!_.isUndefined(injectedWeb3IfExists) && !_.isUndefined(injectedWeb3IfExists.currentProvider)) {
+            injectedProviderIfExists = injectedWeb3IfExists.currentProvider;
+        } else {
+            return undefined;
+        }
+    }
+    if (injectedProviderIfExists) {
+        // Wrap Metamask in a compatibility wrapper as some of the behaviour
+        // differs
+        var networkId = await new web3_wrapper_1.Web3Wrapper(injectedProviderIfExists).getNetworkIdAsync();
+        var signerProvider =
+            injectedProviderIfExists.isMetaMask || injectedProviderIfExists.isToshi
+                ? new subproviders_1.MetamaskSubprovider(injectedProviderIfExists)
+                : new subproviders_1.SignerSubprovider(injectedProviderIfExists);
+        var provider = new web3_wrapper_1.Web3ProviderEngine();
+        provider.addProvider(signerProvider);
+        provider.addProvider(new subproviders_1.RPCSubprovider(networkToRPCURI[networkId]));
+        provider.start();
+    }
+	web3Wrapper = new web3_wrapper_1.Web3Wrapper(provider);
+    var address = await web3Wrapper.getAvailableAddressesAsync();
+    console.log(address);
+}
+</script>

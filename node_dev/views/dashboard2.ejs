@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->        
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  						
+						<h2>
+							<span class="collapse in hidden-xs"><%= page %></span>
+						</h2>
+						<div class="ref-sec clearfix">							
+							<label class="pull-left"><h3>Referral:</h3></label>
+							
+							<div class="col-xs-8">
+								<div class="input-group">
+				                    <input type="text" onclick="copyTextAdd();" class="form-control walletAddress" value="http://localhost/evoai/registration?e=<%= links %>" placeholder="https://www.evoai.network/">
+				                    <span onclick="copyTextAdd();" class="input-group-addon">Copy</span>
+			                	</div>
+							</div>
+							
+						</div>
+						<!-- Evobot Profit Calculator -->
+						<div class="row clearfix" id="Evt-calc">
+							<div class="col-md-7 col-sm-6 Evt-calc-book visible-lg visible-md">
+								<h2 class="text-center">EVABOT PROFIT CALCULATOR</h2>
+								<div class="centerline-sec">
+									<img src="../webroot/frontend/images/arrow-centerlineplain.png" class="img-responsive">
+								</div>
+							</div>
+							<div class="col-md-5 col-sm-6 calc-box">							
+		                        <div class="table-responsive">
+		                            <table class="table">
+		                                <thead>
+		                                    <tr>
+		                                        <th>INVESTMENT</th>
+		                                        <th>&nbsp;</th>
+		                                        <th width="50%">ESTIMATED % RETURN<sub>*</sub></th>
+		                                    </tr>
+		                                </thead>
+		                                <tbody>
+		                                    <tr>
+		                                        <td>
+		                                            <label>Amount in USD</label><br>
+		                                            <input type="text" class="number-only" id="amount_value" name="amount_value" onkeyup="getAmount_val();">
+		                                        </td>  
+		                                        <td class="brdR">&nbsp;</td>                                    
+		                                        <td>
+		                                            <label>Daily</label><br>
+		                                            <input type="text" class="number-only" id="daily_amount" name="daily_amount" onkeyup="getAmount_val();">
+		                                            <span class="field-curr">USD</span>
+		                                        </td>
+		                                    </tr>
+		                                    <tr>
+		                                        <td>
+		                                            <label>evoCycles</label><br>
+		                                            <input type="text" class="number-only" name="evoCycles_day" id="evoCycles_day" value="1" onkeyup="getAmount_val();">
+		                                            <label>(max of 90 days)</label>
+		                                        </td>  
+		                                        <td class="brdR">&nbsp;</td>                                    
+		                                        <td>
+		                                            <label>Weekly</label><br>
+		                                            <input type="text" class="number-only" name="weekly_amount" id="weekly_amount" onkeyup="getAmount_val();">
+		                                            <span class="field-curr">USD</span>
+		                                        </td>
+		                                    </tr>
+		                                    <tr>
+		                                        <td>
+		                                            <label>&nbsp;</label><br>
+		                                            <div class="progress">
+		                                              <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+		                                                <span class="sr-only">70% Complete</span>
+		                                              </div>
+		                                            </div>
+												</td>  
+		                                        <td class="brdR">&nbsp;</td>                                    
+		                                        <td>
+		                                            <label>Monthly</label><br>
+		                                            <input type="text" class="number-only" name="monthly_amount" id="monthly_amount" onkeyup="getAmount_val();">
+		                                            <span class="field-curr">USD</span>
+		                                        </td>
+		                                    </tr>
+		                                </tbody>
+		                            </table>
+		                        </div>
+                    		</div>
+                    		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                    			<p>*Profit levels can not be guaranteed but this calculator provides estimates based on previous performance and does not reflect Reivesting</p>
+                    		</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

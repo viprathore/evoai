@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->          
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>						
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  						
+						<h2>
+							<span class="collapse in hidden-xs"><%= page %></span>
+						</h2>  
+						<div id="main_countdown" class="row clearfix">							
+							<div class="countdown countdown-default col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6">
+								<h2 class="text-center">PRESALE</h2>
+								<div class="countdown-time" data-time="2018/10/15 21:00:00">									
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<a class="btn-buy">BUY EVOT</a>
+						</div>
+				        <div id="Privatesale2">
+							<h4><strong>Amount</strong></h4>
+							<div class="col-md-10 col-md-offset-1">
+								<div class="row clearfix">
+									<div class="col-lg-3 col-md-3">
+										<div class="input-group">
+											<input type="text" onkeyup="get_evoaiAmountETH();" id="eth_amount_cal" class="form-control number-only" aria-label="...">
+											<div class="input-group-btn">
+												<button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ETH</button>											
+											</div><!-- /btn-group -->
+										</div><!-- /input-group -->
+									</div>
+									<div class="col-lg-3 col-md-3">
+										<div class="input-group">
+											<input type="text" onkeyup="get_evoaiAmountUSD();" id="usd_amount_cal" class="form-control number-only" aria-label="...">
+											<div class="input-group-btn">
+												<button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">USDT</button>                                   
+											</div><!-- /btn-group -->
+										</div><!-- /input-group -->
+									</div><!-- /.col-lg-6 -->
+									<div class="col-lg-2 col-md-2 col-sm-2 text-center">
+										<h3><i class="fas fa-equals"></i></h3>
+									</div>
+									<div class="col-lg-3 col-md-3">
+										<div class="input-group">
+											<input type="text" id="evot_amount_cal" onkeyup="get_evoaiAmountEVOT();" class="form-control equals number-only">
+											<div class="input-group-btn">
+												<button type="button" class="btn btn-default" data-toggle="dropdown">EVOT</button>
+											</div><!-- /btn-group -->
+										</div><!-- /input-group -->
+									</div><!-- /.col-lg-6 -->
+								</div>
+							</div>    
+							<div class="col-md-12 text-center">       
+								<h4>You Purchase ....................................... <span id="evot_value"></span> EVOT</h4>
+								<h4>Bonus 64% ....................................... <span id="evot_bonus"></span> EVOT</h4>
+							</div> 			
+							<div class="col-md-10 col-md-offset-1 copy-addr">                        
+								<div class="row clearfix">
+									<div class="col-md-1 col-sm-2">
+										<img src="https://www.evoai.network/webroot/frontend/images/eth-iconM.png" class="img-responsive">
+									</div>
+									<div class="col-md-8 col-sm-8">
+										<h4 class="addr">EVOAI CROWDSALE CONTRACT ADDRESS:</h4>								
+										<input type="text" onclick="textCopy();" value="0x5824D62F4f3C875C906F4E16d488BeD05a87A2Ea" id="walletAddress">
+										<a style="cursor:pointer;" onclick="textCopy();" class="btn-buy">Copy to clickboard</a>
+										<!--<h4 id="walletAddress" class="wallet-addr">0X95a0c94fd53C11Dc84c9C4A2dA6598358e3f7F2c</h4>-->                                
+									</div>
+									<div class="col-md-2 col-sm-2 qr-modalimg pull-right">
+										<img src="https://www.evoai.network/webroot/frontend/images/qr-image.jpg" class="img-responsive">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 text-center">
+								<h4>Please use this wallet to buy EVOT tokens with ETH<br> Recommended gas limit – 400,000 (50 GWEI)<br> Once you make payment, your tokens will appear in your wallet.</h4>
+								<p>Your balance will be updated as soon as your deposit has 1 confirmation on the blockchain </p>					
+							</div>
+				        </div>    					
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

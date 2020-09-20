@@ -1,0 +1,1035 @@
+<script>
+        var Web3 = require('web3');
+        
+        window.addEventListener('load', async () => {    
+            
+            if (window.ethereum) {
+                window.web3 = new Web3(ethereum);
+                try {
+                    await ethereum.enable();
+                    userAddress = web3.eth.accounts[0];
+                    web3.eth.defaultAccount = userAddress;        
+                    const EvoAi = web3.eth.contract(wallet_contract_abi);
+                    walletContractInstance = EvoAi.at(wallet_contract_address);
+                    
+					const Evabot = web3.eth.contract(evabot_contract_abi);
+                    evabotContractInstance = Evabot.at(evabot_contract_address);
+					
+                    const TokenContract = web3.eth.contract(token_abi);
+                    tokenInstance = TokenContract.at(token_address);
+                } catch(e) {
+                    console.log(e);
+                }
+            } else if(window.web3) {
+                window.web3 = new Web3(web3.currentProvider);
+                userAddress = web3.eth.accounts[0];
+                web3.eth.defaultAccount = userAddress;        
+                const EvoAi = web3.eth.contract(wallet_contract_abi);
+                walletContractInstance = EvoAi.at(wallet_contract_address);
+                
+                const Evabot = web3.eth.contract(evabot_contract_abi);
+                evabotContractInstance = Evabot.at(evabot_contract_address);
+					
+                const TokenContract = web3.eth.contract(token_abi);
+                tokenInstance = TokenContract.at(token_address);
+            }
+            getBalances();
+            
+			//getBalanceOfTokenByUser();
+			// if user is admin		
+			if((userAddress.toLowerCase()).toString() == '0xb5869587ca6e239345f75c28d3b8ee23da812759') {
+			// if((userAddress.toLowerCase()).toString() == '0xd6e2d23eeb8677c49dbeae5ba2b3ec188b4dc58e') {
+				$('#walletcontrols').css('display', 'block');
+            }
+            
+            wallet_whitelists = whitelists;
+        });
+
+        var walletContractInstance = '';
+        var userAddress = '';
+        var wallet_whitelists;
+        // init to interact with contract
+        try {
+          userAddress = web3.eth.accounts[0];
+          web3.eth.defaultAccount = userAddress;        
+          const EvoAi = web3.eth.contract(wallet_contract_abi);
+          walletContractInstance = EvoAi.at(wallet_contract_address);
+          
+		  const Evabot = web3.eth.contract(evabot_contract_abi);
+          evabotContractInstance = Evabot.at(evabot_contract_address);
+		  
+          const TokenContract = web3.eth.contract(token_abi);
+          tokenInstance = TokenContract.at(token_address);
+        } catch (e) {
+          console.log('Web3 does not exist');
+        }
+    
+		// get EVABOT pending token and pending token by current user
+        function getEvabotPendingToken() {
+            try {
+                return new Promise((resolve, reject) => {
+                    evabotContractInstance.balanceOfPendingToken(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+        //get EVABOT whitelists
+        function getWhitelists() {
+            try {
+                return new Promise((resolve, reject) => {
+                    evabotContractInstance.getWhitelists(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            } 
+        }
+
+        //get EVABOT activelist
+        function getActiveLists() {
+            try {
+                return new Promise((resolve, reject) => {
+                    evabotContractInstance.getActiveUserLists(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            } 
+        }
+
+        // get EVABOT active token and pending token by current user
+        function getEvabotActiveToken() {
+            try {
+                return new Promise((resolve, reject) => {
+                    evabotContractInstance.balanceOfActiveToken(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+		
+        // users have to pay this token fee when they deposit token
+        function getCurrentTokenFee() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.getCurrentTokenFee(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    
+        // set the token fee that users have to pay when they deposit token
+        function setTokenFee() {
+			var amount = prompt("Please enter ether fee amount:", "0.5");
+			if (amount == null || amount == "") {
+				return false;
+			}
+			if (amount < 0) {
+				return false;
+			}
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.setTokenFee(web3.toWei(amount,'ether'), function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }      
+        }
+    
+        // ether deposit
+        function makeEthDeposit(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.deposit({from: userAddress, gas: 300000, value: web3.toWei(amount,'ether')}, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }        
+        }
+    
+        // we have to set the token address to deposit only AVOT token.
+        function setTokenAddress() {
+			var address = prompt("Please enter evot token address:", "0x5de805154a24cb824ea70f9025527f35facd73a1");
+			if (address == null || address == "") {
+				return false;
+			}
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.setTokenAddress(address, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            } 
+        }
+		
+		// set evabot address
+        function setEvabotContractAddress() {
+			var address = prompt("Please enter token address:", "0x0f7fb3422791d42b02467b7888261f6dc8702d5b");
+			if (address == null || address == "") {
+				return false;
+			}
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.setEvabotContractAddress(address, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            } 
+        }
+    
+        //get current AVOT token address that users deposit 
+        function getEvotTokenAddress() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.getEvotTokenAddress(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            } 
+        }
+    
+        // get current ether fee when users deposit ether
+        function getCurrentEthFee() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.getCurrentEthFee(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+        
+        // set current ether fee that users have to pay when they deposit ether
+        function setETHFee() {
+			var amount = prompt("Please enter ether fee amount:", "0.0015");
+			if (amount == null || amount == "") {
+				return false;
+			}
+			if (amount < 0) {
+				return false;
+			}
+			
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.setETHFee(web3.toWei(amount,'ether'), function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+    
+		// change Admin
+        function changeAdmin() {
+			var admin = prompt("Please enter admin address:", "");
+			if (admin == null || admin == "") {
+				return false;
+			}
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.changeAdmin(admin, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+		
+        // get token balance by current user
+        function balanceOfToken() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfToken(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+		
+		// get token balance by user address
+        function balanceOfTokenByUser(user) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfToken(user, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    
+		// 
+		async function getBalanceOfTokenByUser() {
+			var b = await balanceOfTokenByUser('0xd6E2D23EEb8677c49dbEaE5bA2b3Ec188B4dc58E');
+			console.log(b.toString() / 10**18);
+		}
+        // get ether balance by user address
+        function balanceOfETH() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfETH(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+       
+        // get token balance that can be withdraw to admin
+        function balanceOfContractFeeToken() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfContractFeeToken(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+        
+        // get ether balance that can be withdraw to admin
+        function balanceOfContractFeeEth() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfContractFeeEth(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // admin can withdraw the fee token all
+        function feeWithdrawTokenAll() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.feeWithdrawTokenAll(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }   
+        }
+    
+        // admin can widthraw the fee by amount
+        function feeWithdrawTokenAmount(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.feeWithdrawTokenAmount(amount, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // admin can withraw all ether fee
+        function feeWithdrawEthAll() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.feeWithdrawEthAll(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // admin can withraw ehter fee by amount
+        function feeWithdrawEthAmount(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.feeWithdrawEthAmount(web3.toWei(amount,'ether'), function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // token transfer function
+        function transferToken(receiver, amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.transferToken(receiver, amount, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // ether transfer function
+        function transferETH(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.transferETH(web3.toWei(amount,'ether'), function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // users can withdraw his token
+        function withdrawToken(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.withdrawToken(amount, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // users can withdraw his ether
+        function withdraw(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.withdraw(web3.toWei(amount,'ether'), function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }  
+        }
+    
+        // get the token balance from token contract address by user
+        function tokenBalanceFromTokenContract() {
+            try {
+                return new Promise((resolve, reject) => {
+                    tokenInstance.balanceOf(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }   
+        }
+    
+        // get the token allowance balance by users
+        function tokenAllowance() {
+            try {
+                return new Promise((resolve, reject) => {
+                    tokenInstance.allowance(userAddress, wallet_contract_address, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+    
+        // users have to token approve before call the deposit token function
+        function tokenApprove(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    tokenInstance.approve(wallet_contract_address, amount, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+        
+        // deposit token function
+        function depositToken(amount) {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.depositToken(amount, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }    
+        }
+    
+        // wait while mining the transaction
+        function waitForReceipt(hash, cb) {
+            web3.eth.getTransactionReceipt(hash, (err, receipt) => {
+                if (err) {
+                    cb(err);
+                }
+    
+                if (receipt !== null) {
+                    // Transaction went through
+                    if (cb) {
+                        cb(receipt);
+                    }
+                } else {
+                    // Try again in 1 second
+                    setTimeout( () => {
+                        waitForReceipt(hash, cb);
+                    }, 1000);
+                }
+            });
+        }
+    
+        // confirm if the transaction is mined by txHash
+        function confirmTransactionDeployed(txHash) {
+            return new Promise((resolve, reject) => {
+                waitForReceipt(txHash, (receipt) => {
+                    resolve(receipt);
+                });
+            });
+        }
+    
+        //get token and ether balance when load the page
+        async function getBalances() {
+            try {
+                
+                var token_balance = await balanceOfToken();
+                $('#my_token_balance').text(Number(token_balance.toString()) / 10**18);
+                var ether_balance = await balanceOfETH();
+				var val = (Number(ether_balance.toString()) / 10**18).toString();
+				if (val.indexOf('.') != -1) {
+					var vals = val.split('.');
+					var decimal = '';
+					if(vals[1].length > 5) {
+						decimal = vals[1].substr(0, 5);
+					} else {
+						decimal = vals[1];
+					}
+					val = vals[0] + '.' + decimal;
+				}
+				
+				$('#my_ether_balance').text(val);
+                //$('#my_ether_balance').text(Number(ether_balance.toString()) / 10**18);
+            } catch(e) {
+                $('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.');
+                console.log(e);
+            }   
+    
+        }
+                      
+        // //depend the decimal point when keydown
+        // $('#deposit-token-input').keydown(function(e) {
+        //     if(e.keyCode == 190 || e.keyCode == 110)
+        //         return false;
+        // });
+        // //depend the decimal point when keydown
+        // $('#transfer_evot').keydown(function(e) {
+        //     if(e.keyCode == 190 || e.keyCode == 110)
+        //         return false;
+        // });
+        
+        // click the evot deposit button
+        function depositEvot() {
+            // var token_approve = tokenApprove();
+			$('#deposit_withdraw_error_msg').hide();
+            $('#inputModalLabel').text('Input EVOT value to deposit.');
+            $('#eth_value').hide();
+            $('#deposit-token-input').show();
+            $('#btn_ok').attr('onclick', 'depositEvotOK()');
+            $('#inputModal').modal('show');
+        }
+        
+        // click ok button on deposit modal 
+        async function depositEvotOK() {
+            var amount = $('#deposit-token-input').val();
+            if (amount == '' || amount <= 0.5) {
+				$('#deposit_withdraw_error_msg').show();
+                $('#deposit_withdraw_error_msg').text('Input the value more than 0.5!');
+                $('#deposit_withdraw_error_msg').css('color', 'red');
+                return false;
+            }
+            try {
+                amount = amount * (10**18);
+                // get token balance if user has enough token to deposit
+                var is_enough_token = await tokenBalanceFromTokenContract();
+                var token_balance = Number(is_enough_token.toString());
+                if(token_balance < Number(amount)) {
+                    $('#deposit_withdraw_error_msg').text('Not enough token to deposit. You owned ' + token_balance / 10**18+ ' tokens now.');
+					$('#deposit_withdraw_error_msg').css('display', 'block');
+                    $('#deposit_withdraw_error_msg').css('color', 'red');
+                    return false;
+                }
+                $('#deposit_withdraw_error_msg').hide();
+                
+				$('#inputModal').modal('hide');
+                // first, we have to get token allowance to deposit
+                var allowance = await tokenAllowance();
+                
+                // if allowance balance is less than amount, user has to approve
+                if (Number(allowance.toString()) < Number(amount)) {
+                    // the quantity of approve
+                    var hash = await tokenApprove(Number(amount));
+                    console.log('hash: ' + hash);
+                    var result = await confirmTransactionDeployed(hash);
+                
+                    // if success the approve
+                    if(result['status'] == '0x1') {
+                        var deposit_hash = await depositToken(Number(amount));
+                        console.log('deposit hash: ' + deposit_hash);
+                        var deposit_result = await confirmTransactionDeployed(deposit_hash);
+                        
+                        // if deposit success
+                        if(deposit_result['status'] == '0x1') {
+                            console.log('success');
+                            // update balance text on the site
+                            var disp_balance = await balanceOfToken();
+                            $('#my_token_balance').text(disp_balance.toString() / 10**18);
+                        } else {
+                            // deposit failed
+							$('#inputModal').modal('show');
+                            $('#deposit_withdraw_error_msg').show();
+                            $('#deposit_withdraw_error_msg').text('deposit failed');
+							$('#deposit_withdraw_error_msg').css('display', 'block');
+                            $('#deposit_withdraw_error_msg').css('color', 'red');
+                        }
+                    } else {
+                        // approve failed
+						$('#inputModal').modal('show');
+                        $('#deposit_withdraw_error_msg').show();
+                        $('#deposit_withdraw_error_msg').text('approve failed');
+						$('#deposit_withdraw_error_msg').css('display', 'block');
+                        $('#deposit_withdraw_error_msg').css('color', 'red');
+                    }
+                } else {
+                    console.log('depositing...');
+                    // if you have enough tokens to depoist
+                    var deposit_hash = await depositToken(Number(amount));
+                    console.log('deposit hash: ' + deposit_hash);
+                    var deposit_result = await confirmTransactionDeployed(deposit_hash);
+                    
+                    // if deposit success
+                    if(deposit_result['status'] == '0x1') {
+                        console.log('success');
+                        // update balance text on the site
+                        var disp_balance = await balanceOfToken();
+                        $('#my_token_balance').text(disp_balance.toString() / 10**18);
+                    } else {
+                        // deposit failed
+						$('#inputModal').modal('show');
+                        $('#deposit_withdraw_error_msg').show();
+                        $('#deposit_withdraw_error_msg').text('deposit failed');
+						$('#deposit_withdraw_error_msg').css('display', 'block');
+                        $('#deposit_withdraw_error_msg').css('color', 'red');
+                    }
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    
+        // click the evot withdraw button
+        function withdrawEvot() {
+            // var token_approve = tokenApprove();
+            $('#inputModalLabel').text('Input EVOT value to withdraw.');
+            $('#eth_value').hide();
+            $('#deposit-token-input').show();
+            $('#btn_ok').attr('onclick', 'withdrawEvotOK()');
+            $('#inputModal').modal('show');
+        }
+    
+        // click ok button on withdraw modal
+        async function withdrawEvotOK() {
+            var amount = $('#deposit-token-input').val();
+            if (amount == '' || amount <= 0) {
+                return false;
+            }
+            
+            try {
+                amount = amount * (10**18);
+                // Check if the balance is sufficient or not.
+                var token_balance = await balanceOfToken();
+                console.log(token_balance.toString());
+                // if not sufficient to withdraw
+                if (Number(token_balance.toString()) < Number(amount)) {
+                    $('#deposit_withdraw_error_msg').text('You have not enough tokens to withdraw.');
+					$('#deposit_withdraw_error_msg').css('display', 'block');
+                    $('#deposit_withdraw_error_msg').css('color', 'red');
+                } else {
+                    $('#deposit_withdraw_error_msg').hide();
+					$('#inputModal').modal('hide');
+                    var hash = await withdrawToken(Number(amount));
+                    var result = await confirmTransactionDeployed(hash);
+                
+                    // if success the withdraw
+                    if(result['status'] == '0x1') {
+                        console.log('withdraw success');
+                        // update balance text on the site
+                        var disp_balance = await balanceOfToken();
+                        $('#my_token_balance').text(disp_balance.toString() / 10 ** 18);
+                        // var origin = $('#my_token_balance').text();
+                        // var updated = Number(origin) - Number(amount / 10**18);
+                        // $('#my_token_balance').text(updated);
+                    } else {
+						$('#inputModal').modal('show');
+                        $('#deposit_withdraw_error_msg').show();
+                        $('#deposit_withdraw_error_msg').text('Withdraw failed');
+						$('#deposit_withdraw_error_msg').css('display', 'block');
+                        $('#deposit_withdraw_error_msg').css('color', 'red');
+                    }
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    
+        // click token transfer button
+        async function transferEVOT() {
+            // alert('Sorry, The site is under maintenance. We will be back in 30 minutes.');
+            // alert('The beta test is finished now.\n We will resume the new cycle from new year.\n Happy New Year!');
+            // return false;
+            var amount = $('#transfer_evot').val();
+            if (amount == '' || amount <= 0) {
+                $('#transfer_evot').focus();
+                return false;
+            }
+    
+            // select option
+            var tokentransfer_target = $('#tokentransfer_target').val();
+            // if(tokentransfer_target == '0') {
+            //     return false;
+            // }
+
+            try {
+				$('#inputModal').modal('hide');
+                amount = amount * (10**18);
+                               
+                //check if current user is permitted user
+                var j = 0;
+                for(var i = 0; i < wallet_whitelists.length; i++) {
+                    if((userAddress.toLowerCase()).toString() == ((wallet_whitelists[i]).toLowerCase()).toString())
+                        j++;
+                }       
+                if(j == 0) {
+                    alert('Sorry, you are not permitted.');
+                    return false;
+                }    
+
+                // Check if the balance is sufficient or not.
+                var token_balance = await balanceOfToken();
+                // if not sufficient to withdraw
+                if (Number(token_balance.toString()) < Number(amount)) {
+                    $('#transfer_evot').focus();
+                    console.log('You have not enough tokens to transfer.');
+                } else {
+ 
+                    // check if already invested
+                    var activers = await getActiveLists();
+                    var m = 0;
+                    for(var ii = 0; ii < activers.length; ii++) {
+                        if((userAddress.toLowerCase()).toString() == ((activers[ii]).toLowerCase()).toString())
+                            m++;
+                    }
+                    if(m != 0) {
+                        alert('You\'ve already invested the tokens. \n Please follow the next steps to invest more tokens \n 1. On the Evabot page, set the TOGGLE AUTO INVEST state to off. \n 2. When you have finished one cycle, the token will return to your wallet page. \n 3. After that, You can invest more tokens. \n This step is regrettable, but these steps are required for strong security.' );
+                        return false;
+                    }
+                    
+                    var hash = '';
+                    if(tokentransfer_target == '1') {
+                        var evabot_active = await getEvabotActiveToken();
+                        var evabot_pending = await getEvabotPendingToken();
+                        var availiable_token = 1000 - (evabot_pending.toString() / 10**18 + evabot_active.toString() / 10**18);
+                        
+                        if (availiable_token <= 0) {
+                            alert("You can't transfer anymore.");
+                            return false;
+                        }
+                        
+                        if (amount > availiable_token * 10**18) {
+                            alert('Only ' + availiable_token + ' tokens can be sent');
+                            return false;
+                        }
+                        hash = await transferToken(evabot_contract_address, Number(amount));
+                    }
+ 
+                    if(tokentransfer_target == '2') {
+                        hash = await transferToken(exchange_contract_address, Number(amount));
+                    }
+                    
+                    if(hash != '')
+                        var result = await confirmTransactionDeployed(hash);
+                                        
+                    // if success the withdraw
+                    if(result['status'] == '0x1') {
+                        console.log('transfer success');
+                         // update balance text on the site
+                        var disp_balance = await balanceOfToken();
+                        $('#my_token_balance').text(disp_balance.toString() / 10**18);
+                        // var origin = $('#my_token_balance').text();
+                        // var updated = Number(origin) - Number(amount);
+                        // $('#my_token_balance').text(updated);
+                    } else {
+                        console.log('transfer failed');
+                    }
+                }
+ 
+            } catch(e) {
+                console.log(e);
+            }
+             
+        }
+    
+        // click ether deposit button
+        function depositEth() {
+            // var token_approve = tokenApprove();
+            $('#inputModalLabel').text('Input ETH value to deposit.');
+            $('#deposit-token-input').hide();
+            $('#deposit_withdraw_error_msg').hide();
+            $('#eth_value').show();
+            $('#btn_ok').attr('onclick', 'depositEthOK()');
+            $('#inputModal').modal('show');
+        }
+    
+        // click the ok button on ether deposit modal
+        async function depositEthOK() {
+            var amount = $('#eth_value').val();
+            if (amount == '' || amount <= 0.0015) {
+                $('#deposit_withdraw_error_msg').show();
+                $('#deposit_withdraw_error_msg').text('Input the value more than 0.0015!');
+                $('#deposit_withdraw_error_msg').css('color', 'red');
+                return false;
+            }
+    
+            try {
+                $('#inputModal').modal('hide');
+                var deposit_hash = await makeEthDeposit(Number(amount));
+                console.log('deposit hash: ' + deposit_hash);
+                var deposit_result = await confirmTransactionDeployed(deposit_hash);
+                
+                // if deposit success
+                if(deposit_result['status'] == '0x1') {
+                    console.log('success');
+                    // update balance text on the site
+                    // var origin = $('#my_ether_balance').text();
+                    // var updated = Number(origin) + Number(amount - 0.0015);
+                    // $('#my_ether_balance').text(updated);
+                } else {
+                    $('#inputModal').modal('show');
+                    $('#deposit_withdraw_error_msg').show();
+                    $('#deposit_withdraw_error_msg').text('Deposit ETH failed!');
+                    $('#deposit_withdraw_error_msg').css('display', 'block');
+                    $('#deposit_withdraw_error_msg').css('color', 'red');
+                    // deposit failed
+                    console.log('deposit failed');
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+ 
+        // click the ether withdraw button
+        function withrawEth() {
+            $('#inputModalLabel').text('Input ETH value to withdraw.');
+            $('#deposit-token-input').hide();
+            $('#eth_value').show();
+            $('#btn_ok').attr('onclick', 'withdrawEthOK()');
+            $('#inputModal').modal('show');
+        }
+ 
+        // withdraw ether ok btn click
+        async function withdrawEthOK() {
+            var amount = $('#eth_value').val();
+            if (amount == '' || amount <= 0) {
+                return false;
+            }
+            
+            try {
+                $('#inputModal').modal('hide');
+                // amount = amount * (10**18);
+                var hash = await withdraw(Number(amount));
+                console.log('withdraw hash: ' + hash);
+                var result = await confirmTransactionDeployed(hash);
+                
+                // if deposit success
+                if(result['status'] == '0x1') {
+                    console.log('success');
+                    // update balance text on the site
+                    // var origin = $('#my_ether_balance').text();
+                    // var updated = Number(origin) - Number(amount);
+                    // $('#my_ether_balance').text(updated);
+                } else {
+                    $('#inputModal').modal('show');
+                    $('#deposit_withdraw_error_msg').show();
+                    $('#deposit_withdraw_error_msg').text('Withdraw ETH failed!');
+                    $('#deposit_withdraw_error_msg').css('display', 'block');
+                    $('#deposit_withdraw_error_msg').css('color', 'red');
+                    // deposit failed
+                    console.log('withdraw failed');
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+ 
+        // transfer ether click
+        async function transferETHClick() {
+            var amount = parseFloat($('#ether_to_amount').val());
+            if (($('#ether_to_amount').val()).trim() == '' || amount <= 0) {
+                return false;
+            }
+         
+            try {
+                amount = amount * (10**18);
+                var hash = await transferETH(Number(amount));
+                console.log('transfer hash: ' + hash);
+                var result = await confirmTransactionDeployed(hash);
+                
+                // if deposit success
+                if(result['status'] == '0x1') {
+                    console.log('success');
+                    // update balance text on the site
+                    // var origin = $('#my_ether_balance').text();
+                    // var updated = Number(origin) - Number(amount);
+                    // $('#my_ether_balance').text(updated);
+                } else {
+                    // deposit failed
+                    console.log('transfer failed');
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        
+        //withrawa all tokens on the contract by admin
+        function withdrawAllTokensOnContract() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.withdrawAllTokensOnContract(function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }   
+        }
+        
+    </script>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->         
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  						
+						<!-- <h2>
+							<span class="collapse in hidden-xs"><%= page %></span>
+						</h2> -->
+						<h2>
+							<span class="collapse in hidden-xs">EXCHANGE</span>
+						</h2>
+						<!-- Investment block area -->
+						<div class="row clearfix mt-20 text-center">
+							<!---->
+							<div class="col-md-6 col-sm-12">
+								<div style="width:100% !important" class="gradient-label mt-5 mb-20">
+									<div style="float:left; margin-left: 10px;">Buy EVOT</div>
+									<div style="float: right; margin-right: 10px;">available balance: <span>0.00000000000003</span> ETH</div>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Amount
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">EVOT</div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Price
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Total
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Fee(0.15%)
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Net Total
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-12 col-sm-12 mt-20">
+									<a class="btn-buy block-btn btn-order">Submit Buy Order</a>
+								</div>
+							</div>
+							<!--//-->
+							<div class="col-md-6 col-sm-12">
+								<div style="width:100% !important" class="gradient-label mt-5  mb-20">
+									<div style="float:left; margin-left: 10px;">Sell EVOT</div>
+									<div style="float: right; margin-right: 10px;">available balance: <span>0</span> EVOT</div>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Amount
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">EVOT</div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Price
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Total
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Fee(0.15%)
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-3 col-sm-12 mt-15 text-right">
+									Net Total
+								</div>
+								<div class="col-md-9 col-sm-12 mt-10">
+									<form class="form-inline">
+										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+											<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="0.0000000000">
+											<div class="input-group-addon">E T H </div>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-12 col-sm-12 mt-20">
+									<a class="btn-buy block-btn btn-order">Submit Sell Order</a>
+								</div>
+							</div>
+						</div>
+						<!-- /Investment block area -->
+						<!-- Order book -->					
+						<div class="col-md-6 col-sm-12 mt-20">
+							<div class="mt-20">
+								<div class="text-left float-left">Sell Orders</div>
+								<div class="text-right">Total: <span>19663523.45885</span> EVOT</div>
+							</div>
+							<div class="table-responsive mt-10">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Price</th>
+											<th>EVOT</th>
+											<th width="50%">ETH</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-12 mt-20">
+							<div class="mt-20">
+								<div class="text-left float-left">Buy Orders</div>
+								<div class="text-right">Total: <span>19663523.45885</span> ETH</div>
+							</div>
+							<div class="table-responsive mt-10">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Price</th>
+											<th>EVOT</th>
+											<th width="50%">ETH</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+										<tr>
+											<td>
+												0.000000008895
+											</td>
+											<td>
+												0.000000000474
+											</td>
+											<td>
+												0.000000008895
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /Order Book -->
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

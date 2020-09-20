@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->         
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  
+						<h2 class="pro-heading"><%= page %>	</h2>
+						<h3 class="text-center mb-70 sub-heading">Our support team is here help you. Please send us a message<br> using the from below.</h3>
+						<div class="row clearfix">
+							<form action="/supportData" method="POST">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="form-group">
+										<label>Subject</label>
+										<input type="text" name="subject" required id="subject" class="form-control">
+									</div>
+									<div class="form-group">
+										<label>Email</label>
+										<input type="text" name="email" required id="email" class="form-control">
+									</div>
+									<div class="form-group">
+										<label>Message</label>
+										<textarea name="message" id="message" required class="form-control"></textarea>
+									</div>
+									<div class="form-group">
+										<button class="btn-submit btn-update mt-0" onclick="supportDataStore();">Send</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

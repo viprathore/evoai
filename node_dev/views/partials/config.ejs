@@ -1,0 +1,2697 @@
+<script>
+	// wallet contract
+	var wallet_contract_address = '0x65d7728150ca1e7150fdd8a23429fc57241ab2c2';
+	var wallet_contract_abi = [{"constant":true,"inputs":[],"name":"balanceOfContractFeeToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_receiver","type":"address"},{"name":"amount","type":"uint256"}],"name":"transferToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setExchangeContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"setTokenFee","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"setETHFee","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"feeETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferETH","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdrawToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedEthFromEvabot","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"depositToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentTokenFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEvotTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentEthFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"feeWithdrawEthAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getEvabotContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"feeWithdrawTokenAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedTokenFromEvabot","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"admin_","type":"address"}],"name":"changeAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"withrawAllEthOnContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setEvabotContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"feeWithdrawEthAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"feeWithdrawTokenAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"withdrawAllTokensOnContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"feeEVOT","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalTokenFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"etherBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"getExchangeContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedEthFromExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalEthFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"tokenBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"balanceOfContractFeeEth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"_to","type":"address"}],"name":"Transfered","type":"event"}];
+	 
+	// evabot contract
+  
+  //   var evabot_contract_address = '0xd9bf46ab4a2ddca083421dcc7171de4989aa104a';
+  //   var evabot_contract_abi = [{"constant":false,"inputs":[{"name":"_wallet","type":"address"}],"name":"setWalletContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"activeToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDailyProfitSumForAllUsers","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getTotalInvested","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdrawAllTokens","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getActiveUserCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_addrs","type":"address[]"},{"name":"_vals","type":"uint256[]"}],"name":"distributeEth","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferETH","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getInvestedTokenBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"startCycle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"eth_value_amount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_time","type":"uint256"}],"name":"setCycleResetTime","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getPendingUserCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getActiveUserLists","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"limit_token","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"dailyProfitSumForAllUsers","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEvotTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"increasePendingTokenBalance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"stopCycle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_max","type":"uint256"}],"name":"setMaxWhitelists","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"}],"name":"removeWhitelist","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getAutoInvestStatus","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getTotalProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"withdrawAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"myEthBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"isAutoInvest","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"admin_","type":"address"}],"name":"changeAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalInvested","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_amount","type":"uint256"}],"name":"setEthValueAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"receiveToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenEVOT","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cycleResetTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEthValueAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"max_whitelists","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getWhitelists","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"dailyEthProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getDailyEthProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"pendingToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"wallet_contract","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[],"name":"setAutoInvest","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"readyTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getReadyTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfPendingToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cycleOpened","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"}],"name":"addWhitelist","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"admin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_limit","type":"uint256"}],"name":"setInvestTokenLimit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"whitelists","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfActiveToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"_to","type":"address"}],"name":"Transfered","type":"event"}];
+  
+	var evabot_contract_address_old = '0x0f7fb3422791d42b02467b7888261f6dc8702d5b';
+	var evabot_contract_abi_old = [
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addActiveUserListArr",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addPendingUserListArr",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addWhitelist",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "admin_",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "changeAdmin",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "deposit",
+		  "outputs": [],
+		  "payable": true,
+		  "stateMutability": "payable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_addrs",
+				  "type": "address[]"
+			  },
+			  {
+				  "name": "_vals",
+				  "type": "uint256[]"
+			  }
+		  ],
+		  "name": "distributeEth",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "emptyActiveUserList",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "emptyPendingUserList",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "forceStopCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "increasePendingTokenBalance",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "receiveToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "removeWhitelist",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "setAutoInvest",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_status",
+				  "type": "bool"
+			  }
+		  ],
+		  "name": "setAutoInvestByAdmin",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfActiveToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfETH",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfPendingToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_time",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setCycleResetTime",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setEthValueAmount",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_wallet",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setFeeContractAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_time",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setForceReadyTime",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_limit",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setInvestTokenLimit",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_max",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setMaxWhitelists",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_token",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setTokenAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setTotalInvestedToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setTotalProfit",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_wallet",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setWalletContractAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "startCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "stopCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transferETH",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transferToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "withdrawAll",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "withdrawAllTokens",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "inputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "constructor"
+	  },
+	  {
+		  "payable": true,
+		  "stateMutability": "payable",
+		  "type": "fallback"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Deposit",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Withdraw",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "_from",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "_to",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "Transfered",
+		  "type": "event"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "activeToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "admin",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfActiveToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfETH",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfPendingToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "cycleOpened",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint32"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "cycleResetTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "dailyEthProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "dailyProfitSumForAllUsers",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "eth_value_amount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "fee_contract",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getActiveUserCount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getActiveUserLists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getAutoInvestStatus",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getDailyEthProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getDailyProfitSumForAllUsers",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getEthValueAmount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getEvotTokenAddress",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getInvestedTokenBalance",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getPendingUserCount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getPendingUserlists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getReadyTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getTotalInvested",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getTotalProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getWhitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "isAutoInvest",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "limit_token",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "max_whitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "myEthBalance",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "pendingToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "readyTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "tokenEVOT",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "totalInvested",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "totalProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "wallet_contract",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "whitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  }
+  ];
+	var evabot_contract_address = '0x6812182fe62ec289a3e22eddd417a1abc882ebe9';
+	var evabot_contract_abi = [
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_wallet",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setWalletContractAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "removePendingArray",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfETH",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "activeToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addPendingUserListArr",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_status",
+				  "type": "bool"
+			  }
+		  ],
+		  "name": "setAutoInvestByAdmin",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_token",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setTokenAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "removeActiveArray",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getDailyProfitSumForAllUsers",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getTotalInvested",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "forceStopCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_time",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setForceReadyTime",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "withdrawAllTokens",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getActiveUserCount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_addrs",
+				  "type": "address[]"
+			  },
+			  {
+				  "name": "_vals",
+				  "type": "uint256[]"
+			  }
+		  ],
+		  "name": "distributeEth",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transferETH",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_len",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setPendingUserListLength",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addActiveUserListArr",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getInvestedTokenBalance",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfETH",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "startCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "eth_value_amount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_time",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setCycleResetTime",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getPendingUserCount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getActiveUserLists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "limit_token",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "emptyPendingUserList",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "dailyProfitSumForAllUsers",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getEvotTokenAddress",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "increasePendingTokenBalance",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "stopCycle",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfPendingToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_max",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setMaxWhitelists",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "removeWhitelist",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getAutoInvestStatus",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getTotalProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "withdrawAll",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "myEthBalance",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_wallet",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "setFeeContractAddress",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "isAutoInvest",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "admin_",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "changeAdmin",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "totalInvested",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setEthValueAmount",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "receiveToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setTotalInvestedToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transferToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "tokenEVOT",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "totalProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "cycleResetTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getEthValueAmount",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getPendingUserlists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "max_whitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getWhitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address[]"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "dailyEthProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setBalanceOfActiveToken",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "getDailyEthProfit",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "pendingToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "wallet_contract",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "deposit",
+		  "outputs": [],
+		  "payable": true,
+		  "stateMutability": "payable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setTotalProfit",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "setAutoInvest",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "readyTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "getReadyTime",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_len",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setActiveUserListLength",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfPendingToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "cycleOpened",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint32"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [],
+		  "name": "emptyActiveUserList",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "fee_contract",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "addWhitelist",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "admin",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_limit",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "setInvestTokenLimit",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "whitelists",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "address"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "user",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOfActiveToken",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "inputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "constructor"
+	  },
+	  {
+		  "payable": true,
+		  "stateMutability": "payable",
+		  "type": "fallback"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Deposit",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "user",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Withdraw",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": false,
+				  "name": "types",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "_from",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "amount",
+				  "type": "uint256"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "_to",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "Transfered",
+		  "type": "event"
+	  }
+  ];
+	// exchange contract
+	var exchange_contract_address = '0xab1ac171032a2defa1e2d5aa3f2358be5c01f542';
+	var exchange_contract_abi = [{"constant":false,"inputs":[{"name":"_wallet","type":"address"}],"name":"setWalletContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"activeToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDailyProfitSumForAllUsers","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getTotalInvested","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferETH","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getInvestedTokenBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"startCycle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"eth_value_amount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_time","type":"uint256"}],"name":"setCycleResetTime","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"limit_token","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"dailyProfitSumForAllUsers","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEvotTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"increasePendingTokenBalance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"stopCycle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_max","type":"uint256"}],"name":"setMaxWhitelists","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"}],"name":"removeWhitelist","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getAutoInvestStatus","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getTotalProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"withdrawAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"myEthBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"isAutoInvest","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"admin_","type":"address"}],"name":"changeAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalInvested","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_amount","type":"uint256"}],"name":"setEthValueAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"receiveToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenEVOT","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"totalProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cycleResetTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEthValueAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"max_whitelists","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getWhitelists","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"dailyEthProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"address"}],"name":"getDailyEthProfit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"pendingToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"wallet_contract","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"setAutoInvest","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"readyTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getReadyTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfPendingToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cycleOpened","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"}],"name":"addWhitelist","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"admin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_limit","type":"uint256"}],"name":"setInvestTokenLimit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"whitelists","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfActiveToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"_to","type":"address"}],"name":"Transfered","type":"event"}];
+  
+	// evot token contract
+	var token_abi = [
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_spender",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "approve",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "burn",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_from",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "burnFrom",
+		  "outputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_spender",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_subtractedValue",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "decreaseApproval",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_spender",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_addedValue",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "increaseApproval",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_to",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transfer",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "constant": false,
+		  "inputs": [
+			  {
+				  "name": "_from",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_to",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "transferFrom",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "bool"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+	  },
+	  {
+		  "inputs": [],
+		  "payable": false,
+		  "stateMutability": "nonpayable",
+		  "type": "constructor"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": true,
+				  "name": "burner",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Burn",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": true,
+				  "name": "from",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": true,
+				  "name": "to",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Transfer",
+		  "type": "event"
+	  },
+	  {
+		  "anonymous": false,
+		  "inputs": [
+			  {
+				  "indexed": true,
+				  "name": "owner",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": true,
+				  "name": "spender",
+				  "type": "address"
+			  },
+			  {
+				  "indexed": false,
+				  "name": "value",
+				  "type": "uint256"
+			  }
+		  ],
+		  "name": "Approval",
+		  "type": "event"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_owner",
+				  "type": "address"
+			  },
+			  {
+				  "name": "_spender",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "allowance",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [
+			  {
+				  "name": "_owner",
+				  "type": "address"
+			  }
+		  ],
+		  "name": "balanceOf",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "decimals",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint8"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "INITIAL_SUPPLY",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "name",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "string"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "symbol",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "string"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  },
+	  {
+		  "constant": true,
+		  "inputs": [],
+		  "name": "totalSupply",
+		  "outputs": [
+			  {
+				  "name": "",
+				  "type": "uint256"
+			  }
+		  ],
+		  "payable": false,
+		  "stateMutability": "view",
+		  "type": "function"
+	  }
+  ];
+	var token_address = '0x5de805154a24cb824ea70f9025527f35facd73a1';
+  </script>

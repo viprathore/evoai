@@ -1,0 +1,228 @@
+	<!--
+	<div class="spinner-wrapper">
+		<div class="spinner">
+			<img src="webroot/frontend/images/preloader-black.gif" alt="" class="img-responsive center-block">
+		</div>
+	</div>
+	-->
+	<div id='toTop'>
+		<i class="fa fa-angle-up"></i>
+	</div>		
+	<section class="header dash-header" id="top">
+		<div>
+			<div class="row clearfix">
+				<!-- Logo -->
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 hidden-xs">
+					<div>
+					<a href="https://www.evoai.network/">
+						<img src="webroot/frontend/images/logo_web.png" alt="" class="img-responsive" >			
+					</a>
+					</div>
+				</div>
+				<!--//-->
+				<!--NAvigation-->
+				<div class="col-xs-12 visible-xs">
+					<nav class="navbar navbar-default">
+					  <div class="container-fluid">
+					    <!-- Brand and toggle get grouped for better mobile display -->
+					    <div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>	
+							<a href="http://evoai.tech/" class="navbar-brand">
+								<img src="webroot/frontend/images/logo_web.png" alt="" class="img-responsive" >			
+							</a>				      
+					    </div>
+					    <!-- Collect the nav links, forms, and other content for toggling -->
+					    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					      <ul class="nav navbar-nav">
+					        <li class="active"><a href="http://evoai.tech/dashboard">Dashboard</a></li>
+					        <li>
+					        	<a href="/wallet">Wallet</a>
+					        </li>
+					        <li>
+					        	<a href="/liveTrades">Live Trades</a>
+					        </li>
+					        <li>
+					        	<a href="/evabot">Evabot</a>
+					        </li>
+					        <li>
+					        	<a href="/evobot">Evobot</a>
+					        </li>
+					        <li>
+					        	<a href="/eve">Eve</a>
+					        </li>
+					        <li>
+					        	<a href="/exchange">Exchange</a>
+					        </li>
+					        <li>
+					        	<a href="http://evoai.tech/profile">Profile</a>
+					        </li>
+					        <li>
+					        	<a href="http://evoai.tech/support">Support</a>
+					        </li>
+					        <li>
+					        	<a href="http://evoai.tech/announcements">Announcements</a>
+					        </li>
+					        <li>
+					        	<a href="http://evoai.tech/myreferrals">My Referrals</a>
+					        </li>
+					        <li>
+					        	<a href="http://evoai.tech/helpSupport">Help & Support</a>
+					        </li>
+					        <li>
+								<form action="/logout" method="post">
+									<button type="submit">Sign out</button>
+								</form>
+							</li>				        
+					      </ul>
+					    </div>
+					  </div>
+					</nav>
+				</div>
+				<!--//-->
+				<div class="col-lg-1 col-md-1 hidden-xs hidden-sm hidden-xs">
+					<a href="#" data-toggle="offcanvas" class="toggle-btn hidden-xs hidden-sm"><i class="fa fa-navicon fa-2x"></i></a>
+				</div>
+				<div class="col-lg-7 col-md-7 col-sm-8 hidden-xs">
+					<ul class="header-property row clearfix">
+						<li class="col-lg-4 col-md-7 col-sm-7"><img src="webroot/frontend/images/eth-iconM.png">&nbsp;&nbsp;<span class="font-purple">1 ETH</span> = <span class="liveUSD_price"></span> USD</li>
+						<li class="col-lg-3 col-md-5 col-sm-5"><span class="font-purple">1 EVOT</span> = <span>0.55 USD</span></li>
+						<li class="my_bal box-shadow col-lg-5 col-md-12 col-sm-12">
+							<div class="head">MY BALANCE</div>
+							<div class="pull-left brd">
+								<!--<span class="liveEVOT_balance">0</span>-->
+                                <span id="header_evot">0</span>
+								<span class="font-purple">EVOT</span>
+							</div> 
+							<div class="pull-left">
+								<!--<span class="liveETH_balance"></span>-->
+                                <span id="header_eth">0</span>
+								<span class="font-purple">ETH</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- My account -->		
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 hidden-xs">
+					<ul class="header-property">
+						<li class="dropdown user user-menu pull-right">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<img src="webroot/frontend/images/user-image.png" class="user-image" alt="User Image"><br>
+								<span class="hidden-xs"><%= Username %></span>
+							</a>
+							<ul class="dropdown-menu">
+								<!-- User image -->
+								<li class="text-center">
+									<img src="webroot/frontend/images/user-image.png" class="img-circle" alt="User Image">
+								</li>
+								<!-- Menu Footer-->
+								<li><a href="http://evoai.tech/profile">Profile</a></li>
+								<li><a href="http://evoai.tech/helpSupport">helpSupport</a></li>
+								<li>
+									<form action="/logout" method="post">
+										<button type="submit">Sign out</button>
+									</form>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>      
+		</div>
+	</section>
+	<script>
+		// my balance
+		// wallet contract
+		var wallet_contract_address = '0xcefbb16cf7a75285d1a8d7f866d460d8c22268c2';
+		var wallet_contract_abi = [{"constant":true,"inputs":[],"name":"balanceOfContractFeeToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_receiver","type":"address"},{"name":"amount","type":"uint256"}],"name":"transferToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setExchangeContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setTokenAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"setTokenFee","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"setETHFee","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"feeETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"transferETH","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdrawToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedEthFromEvabot","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"depositToken","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentTokenFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEvotTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentEthFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"feeWithdrawEthAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getEvabotContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"feeWithdrawTokenAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedTokenFromEvabot","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"admin_","type":"address"}],"name":"changeAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"withrawAllEthOnContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_token","type":"address"}],"name":"setEvabotContractAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"feeWithdrawEthAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"feeWithdrawTokenAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_balance","type":"uint256"}],"name":"withdrawAllTokensOnContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"user","type":"address"}],"name":"balanceOfToken","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"feeEVOT","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalTokenFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"etherBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"getExchangeContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_amount","type":"uint256"}],"name":"recevedEthFromExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalEthFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"tokenBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"balanceOfContractFeeEth","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"user","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"types","type":"uint256"},{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"_to","type":"address"}],"name":"Transfered","type":"event"}];
+		window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                window.web3 = new Web3(ethereum);
+                try {
+                    await ethereum.enable();
+                    userAddress = web3.eth.accounts[0];
+                    web3.eth.defaultAccount = userAddress;        
+                    const EvoAi = web3.eth.contract(wallet_contract_abi);
+                    walletContractInstance = EvoAi.at(wallet_contract_address);
+                                        
+                    //const TokenContract = web3.eth.contract(token_abi);
+                    //tokenInstance = TokenContract.at(token_address);
+                } catch(e) {
+                    console.log(e);
+                }
+            } else if(window.web3) {
+                window.web3 = new Web3(web3.currentProvider);
+                userAddress = web3.eth.accounts[0];
+                web3.eth.defaultAccount = userAddress;        
+                const EvoAi = web3.eth.contract(wallet_contract_abi);
+                walletContractInstance = EvoAi.at(wallet_contract_address);
+                
+                
+                //const TokenContract = web3.eth.contract(token_abi);
+                //tokenInstance = TokenContract.at(token_address);
+            }
+            getHeaderBalance();
+        });
+		//get token and ether balance when load the page
+        async function getHeaderBalance() {
+            try {
+                var token_balance = await balanceOfToken1();
+                $('#header_evot').text(Number(token_balance.toString()) / 10**18);
+				//console.log(Number(token_balance.toString()) / 10**18);
+				
+                var ether_balance = await balanceOfETH1();
+				var val = (Number(ether_balance.toString()) / 10**18).toString();
+				if (val.indexOf('.') != -1) {
+					var vals = val.split('.');
+					var decimal = '';
+					if(vals[1].length > 5) {
+						decimal = vals[1].substr(0, 5);
+					} else {
+						decimal = vals[1];
+					}
+					val = vals[0] + '.' + decimal;
+				}
+				
+				$('#header_eth').text(val);
+            } catch(e) {
+                //$('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.');
+                console.log(e);
+            }   
+    
+        }
+		// get token balance by user address
+        function balanceOfToken1() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfToken(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    
+        // get ether balance by user address
+        function balanceOfETH1() {
+            try {
+                return new Promise((resolve, reject) => {
+                    walletContractInstance.balanceOfETH(userAddress, function(e, r) {
+                        if (e) {
+                            reject(e);
+                        }
+                        resolve(r);
+                    });
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+	</script>

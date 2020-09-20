@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="100" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->      
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">    <h2 class="pro-heading">Ticket ID: 00<%= supportChat_list[0].ticket %></h2>												
+						<!-- userlist-->
+						<div class="row clearfix mt-20" id="Evt-calc">
+							<div class="col-md-12">
+								<h2>Displaying Support Tickets</h2>
+								<div class="messaging">
+							      <div class="mesgs">
+									<div class="msg_history">
+										<%
+											if(supportChat_list != '')
+											{
+												var j = 0;
+												for(var i=0; i < supportChat_list.length; i++)
+												{
+													if(supportChat_list[i].to_id == 0)
+													{
+														%>
+															<div class="incoming_msg">
+																<div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt=""> </div>
+																<div class="received_msg">
+																	<div class="received_withd_msg">																		
+																		<p>
+																			<%= supportChat_list[i].message %>
+																		</p>
+																		<span class="time_date"> <%= supportChat_list[i].created_date %></span>
+																	</div>
+																</div>
+															</div>
+														<%
+													}
+													else
+													{
+														%>
+															<div class="outgoing_msg">
+																<div class="sent_msg">																	
+																	<p>
+																		<%= supportChat_list[i].message %>
+																	</p>
+																	<span class="time_date"> <%= supportChat_list[i].created_date %></span> 
+																</div>
+															</div>
+														<%
+													}
+													j++;
+												}
+											}
+											else
+											{
+												%>
+													No record found
+												<%
+											}
+										%>
+									</div>
+									<%
+										if(supportChat_list[0].status == 0)
+										{
+											%>
+												<div class="type_msg">
+													<div class="input_msg_write">
+														<form action="/supportReply" method="post">
+															<input type="text" required name="message" class="write_msg" placeholder="Type a message" />
+															<input type="hidden" name="ticket" class="hidden" value="<%= supportChat_list[0].ticket %>" />
+															<input type="hidden" name="to_id" class="hidden" value="<%= supportChat_list[0].to_id %>" />
+															<button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+															<p></p><p></p>										
+															<a href="/ticketClose?t=<%= supportChat_list[0].ticket %>" class="btn btn-success btn-lg col-md-12" type="submit">Ticket Close</a>																							
+														</form>
+													</div>
+												</div>
+											<%
+										}
+									%>
+								</div>
+    							</div>
+							</div>
+						</div>
+						<!--//-->
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

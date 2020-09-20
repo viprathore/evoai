@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->         
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  						
+						<h2 class="float-left">
+							<span class="collapse in hidden-xs"><%= page %></span>
+						</h2>
+						<!-- transfer token, ether Modal -->
+						<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="inputModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;"></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span>
+								</button>
+								</div>
+								<div class="modal-body" style="color:black">
+									<div class="form-group" id="inputModalBodyForm">
+										<input class="form-control" type="number" style="color:black" id="transfer_token_value">
+										<input class="form-control" type="number" style="color:black" id="transfer_eth_value">
+									</div>
+									<div id="deposit_withdraw_error_msg"></div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" id="btn_ok" style="width: 17%;height: 37px;border-radius: 10px;">OK</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						<!-- /Modal -->
+
+						<!-- pending investors, active investors view Modal -->
+						<div class="modal fade" id="viewInvestorsModal" tabindex="-1" role="dialog" aria-labelledby="viewInvestorsModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="viewInvestorsModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;"></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span>
+								</button>
+								</div>
+								<div class="modal-body" style="color:black">
+									<div id="investors_list">
+										Loading...
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 17%;height: 37px;border-radius: 10px;">OK</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						<!-- /Modal -->
+
+						<!-- distribute confrim Modal -->
+						<div class="modal fade" id="distributeConfModal" tabindex="-1" role="dialog" aria-labelledby="distributeConfModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="distributeConfModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;">Are You Sure?</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span>
+								</button>
+								</div>
+								<div class="modal-body" style="color:black">
+									<div id="conf_list">
+										Loading...
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" style="width: 17%;height: 37px;border-radius: 10px;" id="distribute_ok">OK</button>
+									<button type="button" class="btn btn-secondary" style="width: 17%;height: 37px;border-radius: 10px;background: #8b4513" data-dismiss="modal">Cancel</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						<!-- /Modal -->
+
+						<!-- Deposit ETH by admin -->
+						<div class="modal fade" id="depositEthModal" tabindex="-1" role="dialog" aria-labelledby="depositEthModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="depositEthModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;"></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span>
+								</button>
+								</div>
+								<div class="modal-body" style="color:black">
+									<div class="form-group" id="depositEthModalBodyForm">
+										<input class="form-control" type="number" style="color:black" id="depositEthvalue">
+									</div>
+									<div id="deposit_eth_error_msg"></div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" id="btn_deposit_ok" style="width: 17%;height: 37px;border-radius: 10px;">OK</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						<!-- /Modal -->
+						<!-- toggle autoinvest Modal -->
+						<div class="modal fade" id="toggleModal" tabindex="-1" role="dialog" aria-labelledby="toggleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="toggleModalLabel" style="float: left;color: rgb(91, 0, 238);line-height: 29px;margin-left: 11px;font-size: 20px;">Auto Invest</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true" style="color:rgb(91, 0, 238);">&times;</span>
+								</button>
+								</div>
+								<div class="modal-body" style="color:black">
+									<div id="toggleModalBodyForm">
+										
+									</div>
+									<div id="toggle_error_msg"></div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" style="width: 17%;height: 37px;border-radius: 10px;background: #8b4513" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-secondary" style="width: 17%;height: 37px;border-radius: 10px;" onclick="autoInvestSwitch()">OK</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						<!-- /Modal -->
+
+						<span class="evot_cycle">NEXT CYCLE IN: <span id="countdown">00:00:00:00</span></span>
+						
+						<!-- chat -->
+						<div class="row">
+							<div class="column col-sm-12 col-xs-12">
+							</div>
+							<!--bharat Graph-->
+							<div class="col-md-12">
+								<div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+							</div>
+							<!--//-->							
+						</div>
+						<!-- /chat -->
+						<!-- profit label -->
+						<div class="row clearfix mt-20">
+							<div class="col-md-6 col-sm-6 col-xs-12 hidden">
+								LAST 24h CYCLE PROFIT: <%= evabot_result[0].daily_profit %> %
+								<% 
+									cal_daily_profit = 0;
+									count_day = 0;
+									cal_daily_arr = Array();
+									if(evabot_result != '')
+									{
+										%>
+											<ul class="hidden">
+												<%
+													for(var i=0; i < evabot_result.length; i++)
+													{
+													
+														cal_daily_profit = cal_daily_profit + evabot_result[i].daily_profit;	
+														cal_daily_arr[i] = evabot_result[i].daily_profit;	
+														count_day++;
+														%>
+															<li><%= evabot_result[i].daily_profit %></li>
+														<%
+													}
+												%>
+											</ul>
+										<%
+									}
+								%>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-12 hidden" >
+								TOTAL 30 DAY PROFIT: <%= cal_daily_profit/count_day %> %
+							</div>
+						</div>
+						<!-- /profit label -->
+						<!-- Investment block area -->
+						<div class="row clearfix text-center">
+							<!---->
+							<div class="col-md-4 col-sm-6">
+								<div class="box-border1 dash-box pd-1">
+									<div class="block-pink-title mt-35">
+										PENDING EVABOT<br> INVESTMENT
+									</div>
+									<div class="bold-font-25 mt-10">
+										<span id="pending_token_value">0</span><span> EVOT</span>
+									</div>
+									<div class="invest-usd-val mt-5">
+										($<span id="pending_token_usd">0</span>)  
+									</div>
+									<a style="cursor:pointer; margin-top:13px !important;" class="btn-buy w-100 block-btn mt-5" onclick="toggleAutoInvest()">TOGGLE AUTOINVEST <span id="toggle_on">ON</span>/<span id="toggle_off">OFF</span></a>
+									<!-- <a style="cursor:pointer;" class="btn-buy w-100 block-btn mt-5" onclick="transferTokentoWallet()">TRANSFER TO WALLET</a> -->
+									<div class="mt-10">
+										<!-- Minimum $250 required per cycle-->
+										&nbsp;  
+									</div>
+								</div>
+							</div>
+							<!--//-->
+							<!---->
+							<div class="col-md-4 col-sm-6">
+								<div class="box-border1 dash-box pd-1">
+									<div class="block-pink-title mt-15">
+										ACTIVE EVABOT<br> INVESTMENT
+									</div>
+									<div class="bold-font-25 mt-10">
+										<span id="active_token_value">0</span> <span>EVOT</span>
+									</div>
+									<div class="invest-usd-val mt-5">
+										($<span id="active_token_usd">0</span>)
+									</div>
+									<div class="mt-10" style="margin-top: 37px !important;margin-bottom: 24px;">
+										EVABOT active funds will be locked until the end of the cycle
+									</div>
+								</div>
+							</div>
+							<!--//-->
+							<div class="col-md-4 col-sm-6">
+								<div class="box-border1 dash-box pd-1">
+									<div class="block-pink-title mt-35">
+										TOTAL ETH<br> EARNED 24h
+									</div>
+									<div class="bold-font-25 mt-10">
+										<span id="total_my_ether_balance">0</span> <span> ETH</span>
+									</div>
+									<!-- <div class="mt-15"> -->
+									<div style="margin-top: 43px !important;margin-bottom: 27px">
+										<a style="cursor:pointer;" class="btn-buy w-100 block-btn" onclick="transferEthToWallet()">TRANSFER PROFITS TO WALLET</a>
+									</div>
+									<div class="mt-10">
+										<!-- <a style="cursor:pointer;" class="btn-buy w-100 block-btn">REINVEST 24h PROFITS</a> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Investment block area -->
+						<!-- total area -->
+						<div class="col-md-12 col-sm-12">
+							<div class="box-border1 dash-box pd-1 mt-20">
+								<div class="row clearfix text-center">
+									<!---->
+									<div class="col-md-4 col-sm-6">
+										<div class="pd-1">
+											<div class="block-pink-title">
+												CUMULATIVE USD<br> INVESTED (all time)
+											</div>
+											<div class="bold-font-25 mt-10">
+												$<span id="total_usd_invested">0</span>
+											</div>
+											<div class="invest-usd-val mt-5">
+												(<span id="total_token_invested">0</span> EVOT)
+											</div>
+										</div>
+									</div>
+									<!--//-->
+									<!---->
+									<div class="col-md-4 col-sm-6">
+										<div class="pd-1">
+											<div class="block-pink-title">
+												TOTAL USD<br> PROFIT (all time)
+											</div>
+											<div class="bold-font-25 mt-10">
+												$<span id="total_usd_profit">0</span>
+											</div>
+											<div class="invest-usd-val mt-5">
+												(<span id="total_token_profit">0</span> ETH)
+											</div>
+										</div>
+									</div>
+									<!--//-->
+									<div class="col-md-4 col-sm-6">
+										<div class="pd-1">
+											<a style="cursor:pointer;" class="btn-buy w-100 block-btn mt-5" data-toggle="modal" data-target="#PROFIT_CALCULATOR">PROFIT CALCULATOR</a>
+											<div class="mt-10">
+												<a target="_new" href="https://etherscan.io/address/0x6812182fe62ec289a3e22eddd417a1abc882ebe9" style="cursor:pointer;" class="btn-buy w-100 block-btn">VIEW TRANSACTIONS</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="admincontrols" style="display:none">
+								<!-- <button style="color:black" onclick="triggerStartCycle()">Start Cycle</button> -->
+								<button style="color:black" onclick="seveToMysqlDatabase()">Save To Database</button>
+								<button style="color:black" onclick="triggerStopCycle()">Stop Cycle</button>
+								<!--<button style="color:black" onclick="getReadyTimeClick()">Get ReadyTime</button>-->
+								<button style="color:black" onclick="depositETHClick()">Deposit Ether</button>
+								<button style="color:black" onclick="setDistributeEth()">Distribute Ether</button>
+								<br><br>
+								<button style="color:black" onclick="getPendingUserData()">Pending Investors</button>
+								<button style="color:black" onclick="getActiveUserData()">Active Investors</button>
+								<br><br>
+								<button style="color:black" onclick="setInvestTokenLimit()">SetMaxInvest Token Amount</button>
+								<button style="color:black" onclick="setTokenAddress()">set evot token</button>
+								<button style="color:black" onclick="setMaxWhitelists()">set max whitelists</button>
+								<button style="color:black" onclick="setCycleResetTime()">set cycle time</button>
+								<button style="color:black" onclick="setWalletContractAddress()">set wallet contract address</button>
+								<button style="color:black" onclick="changeAdmin()">change admin</button><br><br>
+								<button style="color:black" onclick="addWhitelist()">add whitelists</button>
+								<button style="color:black" onclick="removeWhitelist()">remove whitelists</button>
+								<button style="color:black" onclick="getallwhitelistusers()">view whitelists</button>
+								<button style="color:black" onclick="withdrawAll()">withdraw All</button>
+								<!-- <button style="color:black" onclick="withdrawAllTokens(24732 * 10**18)">WithdrawToken</button> -->
+								<button style="color:black" onclick="setTotalInvestedToken()">set total invested</button>
+								<button style="color:black" onclick="setBalanceOfETH()">set eth balance</button>
+								<button style="color:black" onclick="setTotalProfit()">set total profit</button>
+								<button style="color:black" onclick="addActiveUserListArr()">add active array</button>
+								<button style="color:black" onclick="setBalanceOfActiveToken()">set active token</button>
+								<button style="color:black" onclick="setAutoInvestByAdmin()">set toggle status</button>
+								<button style="color:black" onclick="addPendingUserListArr()">add pending array</button>
+								<button style="color:black" onclick="setBalanceOfPendingToken()">set pending token</button>
+							</div>
+						</div>
+						<!-- /total area-->
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>
+	<% include partials/metamask %>		
+	<% include partials/config %>
+	<% include partials/evabot_contract_provider %>		
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script>
+		preloader();
+		var dailyfield_str = '<%= cal_daily_arr %>';
+		var dailyfield_arr = dailyfield_str.split(",");		
+		var create_arr = Array();
+		var k = 29;
+		for(var j=29; j >= 0; j--)
+		{
+			if(dailyfield_arr[j] != undefined)
+			{
+				create_arr[j] = parseFloat(dailyfield_arr[j]);
+			}
+			else
+			{
+				create_arr[k] = 0;
+			}
+			k--;
+		}
+		Highcharts.chart('container', {
+			chart: {
+				type: 'column',
+				backgroundColor: null
+			},
+			title: {
+				text: ''
+			},
+			xAxis: {
+				type: 'category',
+				labels: {
+					//rotation: 90,
+					style: {
+						fontSize: '9px',
+						fontFamily: 'Verdana, sans-serif'
+					},
+					
+				}
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: ''
+				},
+				gridLineColor: '#fff',
+				
+			},
+			legend: {
+				enabled: false
+			},
+			tooltip: {
+				pointFormat: ''
+			},
+			series: [{
+				name: 'Profit',				
+				data: [
+					['1', create_arr[0]],
+					['2', create_arr[1]],
+					['3', create_arr[2]],
+					['4', create_arr[3]],
+					['5', create_arr[4]],
+					['6', create_arr[5]],
+					['7', create_arr[6]],
+					['8', create_arr[7]],
+					['9', create_arr[8]],
+					['10', create_arr[9]],
+					['11', create_arr[10]],
+					['12', create_arr[11]],
+					['13', create_arr[12]],
+					['14', create_arr[13]],
+					['15', create_arr[14]],
+					['16', create_arr[15]],
+					['17', create_arr[16]],
+					['18', create_arr[17]],
+					['19', create_arr[18]],
+					['20', create_arr[19]],
+					['21', create_arr[20]],
+					['22', create_arr[21]],
+					['23', create_arr[22]],
+					['24', create_arr[23]],
+					['25', create_arr[24]],
+					['26', create_arr[25]],
+					['27', create_arr[26]],
+					['28', create_arr[27]],
+					['29', create_arr[28]],
+					['30', create_arr[29]]
+				],
+				color: '#763881'
+			}]
+		});	
+	</script>
+</body>
+</html>

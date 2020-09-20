@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include partials/head %> 
+		<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->          
+		<section class="dashboard-section">	
+			<div class="wrapper">			
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">  						
+						<h2>
+							<span class="collapse in hidden-xs"><%= page %></span>
+						</h2>						
+						<!---->
+						<div class="row clearfix mt-30">
+							<div class="col-md-12">
+								<div class="tabs">
+									<div class="tab-button-outer">
+										<ul id="tab-button">
+											<li><a href="#ethM">ETH</a></li>
+											<li><a href="#btcM">BTC</a></li>
+											<li><a href="#usdtM">USDT</a></li>      
+										</ul>
+									</div>
+									<div class="tab-select-outer">
+										<select id="tab-select">
+											<option value="#ethM">ETH</option>
+											<option value="#btcM">BTC</option>
+											<option value="#usdtM">USDT</option>      
+										</select>
+									</div>	
+	
+									<div id="ethM" class="tab-contents">
+										<h3>ETHEREUM MARKETS</h3>
+										<div class="row clearfix mt-30">		
+											<div class="table-responsive">
+												<table class="table table-bordered livetrade-table liverate">
+													<thead>
+														<tr>
+															<th>UPDATED</th>
+															<th>COINPAIR</th>
+															<th>EXCHANGE1</th>
+															<th>PRICE1</th>
+															<th>EXCHANGE2</th>
+															<th>PRICE 2</th>
+															<th>ARB %</th>											
+														</tr>
+													</thead>
+													<tbody class="liveTradeResultETHEREUM">
+														
+													</tbody>										
+												</table>
+											</div>							
+										</div>   
+									</div>	
+										
+									<div id="btcM" class="tab-contents">
+										<h3>BITCOIN MARKETS</h3> 
+										<div class="row clearfix mt-30">		
+											<div class="table-responsive">
+												<table class="table table-bordered livetrade-table liverate">
+													<thead>
+														<tr>
+															<th>UPDATED</th>
+															<th>COINPAIR</th>
+															<th>EXCHANGE1</th>
+															<th>PRICE1</th>
+															<th>EXCHANGE2</th>
+															<th>PRICE 2</th>
+															<th>ARB %</th>											
+														</tr>
+													</thead>
+													<tbody class="liveTradeResultBITCOIN">
+														
+													</tbody>										
+												</table>
+											</div>							
+										</div>   
+									</div>
+								 	
+									<div id="usdtM" class="tab-contents">
+										<h3>USDT MARKETS</h3>
+										<div class="row clearfix mt-30">		
+											<div class="table-responsive">
+												<table class="table table-bordered livetrade-table liverate">
+													<thead>
+														<tr>
+															<th>UPDATED</th>
+															<th>COINPAIR</th>
+															<th>EXCHANGE1</th>
+															<th>PRICE1</th>
+															<th>EXCHANGE2</th>
+															<th>PRICE 2</th>
+															<th>ARB %</th>											
+														</tr>
+													</thead>
+													<tbody class="liveTradeResultUSDT">
+														
+													</tbody>										
+												</table>
+											</div>							
+										</div>   
+									</div>							  
+								</div>
+							</div>
+						</div>									
+					</div>
+				</div>
+			</div>
+		</section>
+		<% include partials/footer %>
+		<% include partials/script %>
+		<% include partials/metamask %>		
+		<% include partials/config %>		
+		<script>
+			var todayDate = new Date().toJSON().slice(0,10).replace(/-/g,'-'); 
+			//var todayDate = new Date(Date.now() - 86400000).toJSON().slice(0,10).replace(/-/g,'-'); 
+			function liverateTred()
+			{
+				var eth_arr = [];
+				var btc_arr = [];
+				var usdt_arr = [];
+				var base_quote_arr_eth = [];
+				var base_quote_arr_btc = [];
+				var base_quote_arr_usdt = [];
+
+				var evoaiAPI1 = "https://www.evoai.network:5000/v1/arbProfits?date="+todayDate;
+				$.getJSON( evoaiAPI1, {
+					tags: "evoai tech",
+					tagmode: "any",
+					format: "json"
+				})
+				.done(function( data ) { 		
+					for(var i = 0; i < data.length; i++)
+					{						
+						if(data[i].profitPer < 5)
+						{
+							var time_str = data[i].arbTimestamp;
+							var currency_type = data[i].base;
+							var currency_quote = data[i].quote;
+							var type_buyExchange = data[i].buyExchange;
+							var type_sellExchange = data[i].sellExchange;
+							var updated = new Date(time_str).toLocaleTimeString("en-US");
+							if(currency_type == 'BTC' || currency_quote == 'BTC')
+							{
+								if(type_buyExchange == 'BINANCE' || type_buyExchange == 'BITFINEX' || type_buyExchange == 'POLONIEX' || type_buyExchange == 'HITBTC' || type_buyExchange == 'COINBASE')
+								{
+									if(type_sellExchange == 'BINANCE' || type_sellExchange == 'BITFINEX' || type_sellExchange == 'POLONIEX' || type_sellExchange == 'HITBTC' || type_sellExchange == 'COINBASE')
+									{
+										if(data[i].quote == 'GBP' || data[i].base == 'GBP' || data[i].quote == 'USD' || data[i].base == 'USD' || data[i].quote == 'EUR' || data[i].base == 'EUR' )
+										{
+										}
+										else
+										{									
+											if(currency_type == 'BTC')
+											{
+												if ($.inArray(data[i].quote, base_quote_arr_btc)!='-1') {
+													
+												} else {
+													base_quote_arr_btc.push(data[i].quote);
+													btc_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');														
+												}
+											}
+											if(currency_quote == 'BTC')
+											{
+												if ($.inArray(data[i].base, base_quote_arr_btc)!='-1') {
+													
+												} else {
+													base_quote_arr_btc.push(data[i].base);
+													btc_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');														
+												}
+											}
+										}
+									}
+								}
+							}
+							if(currency_type == 'USDT' || currency_quote == 'USDT')
+							{
+								if(type_buyExchange == 'BINANCE' || type_buyExchange == 'BITFINEX' || type_buyExchange == 'POLONIEX' || type_buyExchange == 'HITBTC' || type_buyExchange == 'COINBASE')
+								{
+									if(type_sellExchange == 'BINANCE' || type_sellExchange == 'BITFINEX' || type_sellExchange == 'POLONIEX' || type_sellExchange == 'HITBTC' || type_sellExchange == 'COINBASE')
+									{
+										if(data[i].quote == 'GBP' || data[i].base == 'GBP' || data[i].quote == 'USD' || data[i].base == 'USD' || data[i].quote == 'EUR' || data[i].base == 'EUR' )
+										{																										
+										}
+										else
+										{
+											if(currency_type == 'USDT')
+											{
+												if ($.inArray(data[i].quote, base_quote_arr_usdt)!='-1') {
+													
+												} else {
+													base_quote_arr_usdt.push(data[i].quote);
+													usdt_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');
+												}
+											}
+											if(currency_quote == 'USDT')
+											{
+												if ($.inArray(data[i].base, base_quote_arr_usdt)!='-1') {
+													
+												} else {
+													base_quote_arr_usdt.push(data[i].base);
+													usdt_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');
+												}
+											}
+										}
+									}
+								}
+							}
+							if(currency_type == 'ETH' || currency_quote == 'ETH')
+							{
+								if(type_buyExchange == 'BINANCE' || type_buyExchange == 'BITFINEX' || type_buyExchange == 'POLONIEX' || type_buyExchange == 'HITBTC' || type_buyExchange == 'COINBASE')
+								{
+									if(type_sellExchange == 'BINANCE' || type_sellExchange == 'BITFINEX' || type_sellExchange == 'POLONIEX' || type_sellExchange == 'HITBTC' || type_sellExchange == 'COINBASE')
+									{
+										if(data[i].quote == 'GBP' || data[i].base == 'GBP' || data[i].quote == 'USD' || data[i].base == 'USD' || data[i].quote == 'EUR' || data[i].base == 'EUR' )
+										{
+										}
+										else
+										{
+											if(currency_type == 'ETH')
+											{
+												if ($.inArray(data[i].quote, base_quote_arr_eth)!='-1') {
+													
+												} else {
+													base_quote_arr_eth.push(data[i].quote);													
+													eth_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');															
+												}
+											}
+											if(currency_quote == 'ETH')
+											{
+												if ($.inArray(data[i].base, base_quote_arr_eth)!='-1') {
+													
+												} else {
+													base_quote_arr_eth.push(data[i].base);
+													eth_arr.push('<tr><td>' + updated + '</td><td>' + data[i].base + '/' + data[i].quote + '</td><td>' + data[i].buyExchange +'</td><td>' + data[i].buyPrice +'</td><td>' + data[i].sellExchange +'</td><td>' + data[i].sellPrice +'</td><td style="color: rgba(19, 191, 153,1);">' + data[i].profitPer +'</td></tr>');
+												}
+											}
+										}
+									}
+								}
+							}
+						}						
+					}	
+					$('.liveTradeResultBITCOIN').html(btc_arr);
+					$('.liveTradeResultETHEREUM').html(eth_arr);
+					$('.liveTradeResultUSDT').html(usdt_arr);
+					$('.liverate').DataTable();
+				});	
+			}	
+			liverateTred(); 
+			setInterval(function(){liverateTred();}, 600000);		
+		</script>
+		<script>
+		$(function() {
+			var $tabButtonItem = $('#tab-button li'),
+				$tabSelect = $('#tab-select'),
+				$tabContents = $('.tab-contents'),
+				activeClass = 'is-active';
+
+			$tabButtonItem.first().addClass(activeClass);
+			$tabContents.not(':first').hide();
+
+			$tabButtonItem.find('a').on('click', function(e) {
+				var target = $(this).attr('href');
+
+				$tabButtonItem.removeClass(activeClass);
+				$(this).parent().addClass(activeClass);
+				$tabSelect.val(target);
+				$tabContents.hide();
+				$(target).show();
+				e.preventDefault();
+			});
+
+			$tabSelect.on('change', function() {
+				var target = $(this).val(),
+					targetSelectNum = $(this).prop('selectedIndex');
+
+				$tabButtonItem.removeClass(activeClass);
+				$tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+				$tabContents.hide();
+				$(target).show();
+			});
+		});		
+		preloader();
+		</script>
+	</body>
+</html>

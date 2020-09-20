@@ -1,0 +1,1638 @@
+<script>
+    var Web3 = require('web3');
+    // evot usd value
+    var token_usd = 0.55;        
+    window.addEventListener('load', async () => {
+        if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+            try {
+                await ethereum.enable();
+                userAddress = web3.eth.accounts[0];
+                web3.eth.defaultAccount = userAddress;        
+                const Evabot = web3.eth.contract(evabot_contract_abi);
+                evabotContractInstance = Evabot.at(evabot_contract_address);
+                                    
+                const TokenContract = web3.eth.contract(token_abi);
+                tokenInstance = TokenContract.at(token_address);
+            } catch(e) {
+                console.log(e);
+            }
+        } else if(window.web3) {
+            window.web3 = new Web3(web3.currentProvider);
+            userAddress = web3.eth.accounts[0];
+            web3.eth.defaultAccount = userAddress;        
+            const Evabot = web3.eth.contract(evabot_contract_abi);
+            evabotContractInstance = Evabot.at(evabot_contract_address);
+            
+            
+            const TokenContract = web3.eth.contract(token_abi);
+            tokenInstance = TokenContract.at(token_address);
+        }
+        
+        liveRate_ETHFromEtherscan();
+        
+        getBalances();
+
+        //set toggle button color according to auto invest status
+		var tstatus = await getAutoInvestStatus();
+        if(tstatus) {
+            $('#toggle_on').css('color', 'yellow');
+        } else {
+            $('#toggle_off').css('color', 'yellow');
+        }
+
+		// getReady time 
+		getReadyTimer();
+		// if user is admin		
+		if((userAddress.toLowerCase()).toString() == '0x371785006aae1cbf32fa17339d063bc25742d43f' || (userAddress.toLowerCase()).toString() == '0xd6e2d23eeb8677c49dbeae5ba2b3ec188b4dc58e') {
+		// if((userAddress.toLowerCase()).toString() == '0xd6e2d23eeb8677c49dbeae5ba2b3ec188b4dc58e') {
+            $('#admincontrols').css('display', 'block');
+        }
+    });
+
+    var evabotContractInstance = '';
+    var userAddress = '';
+
+    // init to interact with contract
+    try {
+        userAddress = web3.eth.accounts[0];
+        web3.eth.defaultAccount = userAddress;        
+        const Evabot = web3.eth.contract(evabot_contract_abi);
+        evabotContractInstance = Evabot.at(evabot_contract_address);
+        
+        const TokenContract = web3.eth.contract(token_abi);
+        tokenInstance = TokenContract.at(token_address);
+    } catch (e) {
+        console.log('Web3 does not exist');
+    }
+
+        
+	// get ready timer
+	upgradeTime = 0;
+	seconds = 0;
+	var countdownTimer = '';
+	async function getReadyTimer() {	
+        try {
+            var ready = await getReadyTime();
+            upgradeTime = ready.toString();
+			seconds = upgradeTime;
+			countdownTimer = setInterval('timer()', 1000);		
+        } catch (e) {
+            console.log(e);
+        }
+	}
+	
+	function timer() {
+	  var days        = Math.floor(seconds/24/60/60);
+	  var hoursLeft   = Math.floor((seconds) - (days*86400));
+	  var hours       = Math.floor(hoursLeft/3600);
+	  var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
+	  var minutes     = Math.floor(minutesLeft/60);
+	  var remainingSeconds = seconds % 60;
+	  function pad(n) {
+		return (n < 10 ? "0" + n : n);
+	  }
+	  document.getElementById('countdown').innerHTML = pad(days) + ":" + pad(hours) + ":" + pad(minutes) + ":" + pad(remainingSeconds);
+	  if (seconds == 0) {
+		clearInterval(countdownTimer);
+		document.getElementById('countdown').innerHTML = "00:00:00:00";
+	  } else {
+		seconds--;
+	  }
+	}
+	
+    // we have to set the token address to deposit only AVOT token.
+    function setTokenAddress() {
+	
+		var address = prompt("Please enter evot token address:", "0x5de805154a24cb824ea70f9025527f35facd73a1");
+		if (address == null || address == "") {
+			return false;
+		}
+		
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setTokenAddress(address, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+	
+	// set max whitelists
+    function setMaxWhitelists() {
+	
+		var max = prompt("Please enter max whitelists:", "67");
+		if (max == null || max == "") {
+			return false;
+		}
+		if (max < 0) {
+			return false;
+		}
+		
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setMaxWhitelists(max, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+
+    // force stop
+    function forceStopCycle() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.forceStopCycle(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+	// set cycle reset time
+    function setCycleResetTime() {
+	
+		var max = prompt("Please enter cycle time:", "86400");
+		if (max == null || max == "") {
+			return false;
+		}
+		if (max < 0) {
+			return false;
+		}
+		
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setCycleResetTime(max, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+	
+	// set wallet address
+	function setWalletContractAddress() {
+		var address = prompt("Please enter wallet contract address:", "0x65d7728150ca1e7150fdd8a23429fc57241ab2c2");
+		if (address == null || address == "") {
+			return false;
+		}
+		try {
+			return new Promise((resolve, reject) => {
+				evabotContractInstance.setWalletContractAddress(address, function(e, r) {
+					if (e) {
+						reject(e);
+					}
+					resolve(r);
+				});
+			});
+		} catch (e) {
+			console.log(e);
+		} 
+	}
+	
+	// change Admin
+	function changeAdmin() {
+		var admin = prompt("Please enter admin address:", "");
+		if (admin == null || admin == "") {
+			return false;
+		}
+		try {
+			return new Promise((resolve, reject) => {
+				evabotContractInstance.changeAdmin(admin, function(e, r) {
+					if (e) {
+						reject(e);
+					}
+					resolve(r);
+				});
+			});
+		} catch (e) {
+			console.log(e);
+		}    
+	}
+	
+	// add whitelists
+	function addWhitelist() {
+		var user = prompt("Please enter user address:", "");
+		if (user == null || user == "") {
+			return false;
+		}
+		try {
+			return new Promise((resolve, reject) => {
+				evabotContractInstance.addWhitelist(user, function(e, r) {
+					if (e) {
+						reject(e);
+					}
+					resolve(r);
+				});
+			});
+		} catch (e) {
+			console.log(e);
+		}    
+	}
+	
+	// remove whitelists
+	function removeWhitelist() {
+		var user = prompt("Please enter user address:", "");
+		if (user == null || user == "") {
+			return false;
+		}
+		try {
+			return new Promise((resolve, reject) => {
+				evabotContractInstance.removeWhitelist(user, function(e, r) {
+					if (e) {
+						reject(e);
+					}
+					resolve(r);
+				});
+			});
+		} catch (e) {
+			console.log(e);
+		}    
+	}
+	
+    //get current AVOT token address that users deposit 
+    function getEvotTokenAddress() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getEvotTokenAddress(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+	
+	//get whitelists
+    function getWhitelists() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getWhitelists(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        } 
+    }
+
+    // get pending token balance by current user
+    function balanceOfPendingToken() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfPendingToken(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+	
+	// get pending token balance by user address
+    function balanceOfPendingTokenByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfPendingToken(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+	
+	async function getallwhitelistusers() {
+		var users = await getWhitelists();
+		console.log(users);
+	}
+	
+	// get active token balance by user address
+	function balanceOfActiveToken() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfActiveToken(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // get ether balance by current user
+    function balanceOfETH() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfETH(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // get ether balance by user address
+    function balanceOfETHByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfETH(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
+	// set limit invest token amount
+	function setInvestTokenLimit() {
+		var amount = prompt("Please enter max invest token amount:", "1000");
+		if (amount == null || amount == "") {
+			return false;
+		}
+		if (amount < 0) {
+			return false;
+		}
+		try {
+			return new Promise((resolve, reject) => {
+				evabotContractInstance.setInvestTokenLimit(web3.toWei(amount,'ether'), function(e, r) {
+					if (e) {
+						reject(e);
+					}
+					resolve(r);
+				});
+			});
+		} catch (e) {
+			console.log(e);
+		}      
+	}
+	
+    // token transfer function
+    function transferToken(amount) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.transferToken(amount, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }  
+    }
+	
+    // withraw all ether
+    function withdrawAll() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.withdrawAll(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+	// withdraw tokens
+    function withdrawAllTokens(amount) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.withdrawAllTokens(amount, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }  
+    }
+
+    // ether transfer function
+    function transferETH(amount) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.transferETH(web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }  
+    }
+    
+    // get the total invest profit
+    function getTotalProfit() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getTotalProfit(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }   
+    }
+
+    // get daily profit by user
+    function getDailyEthProfit() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getDailyEthProfit(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // get total INVESTED
+    function getTotalInvested() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getTotalInvested(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // get total INVESTED by user
+    function getTotalInvestedByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getTotalInvested(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // get daily profit sum for all users
+    //function getDailyProfitSumForAllUsers() {
+    //    try {
+    //        return new Promise((resolve, reject) => {
+    //            evabotContractInstance.getDailyProfitSumForAllUsers(function(e, r) {
+    //                if (e) {
+    //                    reject(e);
+    //                }
+    //                resolve(r);
+    //            });
+    //        });
+    //    } catch (e) {
+    //        console.log(e);
+    //    }    
+    //}
+    
+    // get get ready time 
+    function getReadyTime() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getReadyTime(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // get auto invest status
+    function getAutoInvestStatus() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getAutoInvestStatus(userAddress, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    // start the evabot cyle
+    function startCycle() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.startCycle(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // stop the evabot cyle
+    function stopCycle() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.stopCycle(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // set autoinvestment status
+    function setAutoInvest() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setAutoInvest(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+    
+    // wait while mining the transaction
+    function waitForReceipt(hash, cb) {
+        web3.eth.getTransactionReceipt(hash, (err, receipt) => {
+            if (err) {
+                cb(err);
+            }
+
+            if (receipt !== null) {
+                // Transaction went through
+                if (cb) {
+                    cb(receipt);
+                }
+            } else {
+                // Try again in 1 second
+                setTimeout( () => {
+                    waitForReceipt(hash, cb);
+                }, 1000);
+            }
+        });
+    }
+
+    // confirm if the transaction is mined by txHash
+    function confirmTransactionDeployed(txHash) {
+        return new Promise((resolve, reject) => {
+            waitForReceipt(txHash, (receipt) => {
+                resolve(receipt);
+            });
+        });
+    }
+
+    //get token and ether balance when load the page
+    async function getBalances() {
+        try {
+            var pending_token_balance = await balanceOfPendingToken();
+            $('#pending_token_value').text(Number(pending_token_balance.toString()) / 10**18);
+            // get the evot token usd value
+            var pending_token_usd = (Number(pending_token_balance.toString()) / 10**18) * token_usd;
+            $('#pending_token_usd').text(pending_token_usd.toFixed(2));
+
+            var active_token_balance = await balanceOfActiveToken();
+            $('#active_token_value').text(Number(active_token_balance.toString()) / 10**18);
+            // get the evot token usd value
+            var active_token_usd = (Number(active_token_balance.toString()) / 10**18) * token_usd;
+            $('#active_token_usd').text(active_token_usd.toFixed(2));
+
+            var ether_balance = await balanceOfETH();
+			
+			var val = (Number(ether_balance.toString()) / 10**18).toString();
+			if (val.indexOf('.') != -1) {
+				var vals = val.split('.');
+				var decimal = '';
+				if(vals[1].length > 5) {
+					decimal = vals[1].substr(0, 5);
+				} else {
+					decimal = vals[1];
+				}
+				val = vals[0] + '.' + decimal;
+			}
+			
+			$('#total_my_ether_balance').text(val);
+            //$('#total_my_ether_balance').text(Number(ether_balance.toString()) / 10**18 );
+
+            // get total invest token
+            var total_invest = await getTotalInvested();
+			var total_val = (Number(total_invest .toString()) / 10**18).toString();
+			if (total_val.indexOf('.') != -1) {
+				var tvals = total_val.split('.');
+				var tdecimal = '';
+				if(tvals[1].length > 5) {
+					tdecimal = tvals[1].substr(0, 5);
+				} else {
+					tdecimal = tvals[1];
+				}
+				total_val = tvals[0] + '.' + tdecimal;
+			}
+            //$('#total_token_invested').text(Number(total_invest.toString()) / 10**18);
+			$('#total_token_invested').text(total_val);
+			
+            // get the evot token usd value
+            var totoal_token_usd = (Number(total_invest.toString()) / 10**18) * token_usd;
+            $('#total_usd_invested').text(totoal_token_usd.toFixed(2));
+
+            // get total profit
+            var total_profit = await getTotalProfit();
+            
+			var val = (Number(total_profit.toString()) / 10**18).toString();
+			if (val.indexOf('.') != -1) {
+				var vals = val.split('.');
+				var decimal = '';
+				if(vals[1].length > 5) {
+					decimal = vals[1].substr(0, 5);
+				} else {
+					decimal = vals[1];
+				}
+				val = vals[0] + '.' + decimal;
+			}
+			
+            //$('#total_token_profit').text(Number(total_profit.toString()) / 10**18);
+			$('#total_token_profit').text(val);
+			
+            // get the evot token usd value
+            var total_token_usd = Number(val) * eth_usd_price;
+            $('#total_usd_profit').text(total_token_usd.toFixed(4));
+
+        } catch(e) {
+            alert('Please connect to the Ethereum mainnet on Metamask.');
+            $('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.');
+            console.log(e);
+        }   
+
+    }                
+        
+    // click the evot deposit button
+    function depositEvot() {
+        // var token_approve = tokenApprove();
+        $('#inputModalLabel').text('Input EVOT value to depsit.');
+        $('#eth_value').hide();
+        $('#deposit-token-input').show();
+        $('#btn_ok').attr('onclick', 'depositEvotOK()');
+        $('#inputModal').modal('show');
+    }
+    
+    // click token transfer button
+    async function transferEVOT() {
+        var amount = $('#transfer_evot').val();
+        if (amount == '' || amount <= 0) {
+            return false;
+        }
+
+        // select option
+        var tokentransfer_target = $('#tokentransfer_target').val();
+        if(tokentransfer_target == '0')
+            return false;
+                    
+        try {
+            amount = amount * (10**18);
+            // Check if the balance is sufficient or not.
+            var token_balance = await balanceOfToken();
+            // if not sufficient to withdraw
+            if (Number(token_balance.toString()) < Number(amount)) {
+                console.log('You have not enough tokens to transfer.');
+				$('#deposit_withdraw_error_msg').text('You have not enough tokens to transfer.');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+            } else {
+                var hash = '';
+                if(tokentransfer_target == '1') {
+                    hash = await transferToken(evabot_contract_address, Number(amount));
+                }
+
+                if(tokentransfer_target == '2') {
+                    hash = await transferToken(exchange_contract_address, Number(amount));
+                }
+                
+                if(hash != '')
+                    var result = await confirmTransactionDeployed(hash);
+                
+                // if success the withdraw
+                if(result['status'] == '0x1') {
+                    console.log('transfer success');
+                        // update balance text on the site
+                    var disp_balance = await balanceOfToken();
+                    $('#my_token_balance').text(disp_balance.toString() / 10**18);
+                    // var origin = $('#my_token_balance').text();
+                    // var updated = Number(origin) - Number(amount);
+                    // $('#my_token_balance').text(updated);
+                } else {
+                    console.log('transfer failed');
+                }
+            }
+        } catch(e) {
+            console.log(e);
+        }
+            
+    }
+
+    function transferTokentoWallet() {
+        $('#transfer_eth_value').hide();
+		$('#deposit_withdraw_error_msg').hide();
+        $('#inputModalLabel').text('Input token value to transfer');
+        $('#transfer_token_value').show();
+        $('#btn_ok').attr('onclick', 'transferTokenWalletOK()');
+        $('#inputModal').modal('show');
+    }
+    
+    async function transferTokenWalletOK() {
+        var amount = $('#transfer_token_value').val();
+        if (amount == '' || amount <= 0) {
+            return false;
+        }
+
+        try {
+            amount = amount * (10**18);
+            var pending_token = await balanceOfPendingToken();
+            if (amount > pending_token.toString()) {
+                console.log('not enough tokens to transfer');
+				$('#deposit_withdraw_error_msg').text('You have not enough tokens to transfer.');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+                return false;
+            }
+
+            var total_invest = await getTotalInvested();
+            if (total_invest.toString() == '0') {
+				$('#deposit_withdraw_error_msg').text('you can transfer token after finish first cycle.');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+                console.log('you can transfer token after finish first cycle.');
+                return false;
+            }
+			
+			$('#inputModal').modal('hide');
+			
+            var hash = await transferToken(Number(amount));
+            console.log('transfer token hash: ' + hash);
+            var result = await confirmTransactionDeployed(hash);
+            
+            // if deposit success
+            if(result['status'] == '0x1') {
+                console.log('success');
+            } else {
+                // deposit failed
+                console.log('token transfer failed');
+				$('#inputModal').modal('show');
+				$('#deposit_withdraw_error_msg').text('token transfer failed');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    } 
+
+    // toggle auto invest
+    async function toggleAutoInvest() {
+        // alert('Sorry, The site is under maintenance. We will be back in 30 minutes.');
+        //     return false;
+        var status = await getAutoInvestStatus();
+        if(status) {
+            $('#toggleModalBodyForm').text('Switch to auto-invest disable?');
+        } else {
+            $('#toggleModalBodyForm').text('Switch to auto-invest enable?');
+        }
+        $('#toggleModal').modal('show');
+    }
+
+    // auto invest switch
+    async function autoInvestSwitch() {
+		$('#toggleModal').modal('hide');
+        var txHash = await setAutoInvest();
+        var result = await confirmTransactionDeployed(txHash);
+        // if success the withdraw
+        if(result['status'] == '0x1') {
+            console.log('success');
+			var status = await getAutoInvestStatus();
+			if(status) {
+				$('#toggle_on').css('color', 'yellow');
+			} else {
+				$('#toggle_off').css('color', 'yellow');
+			}
+        } else {
+            console.log('auto investment switch failed');
+        }
+    }
+
+    // transfer ether modal
+    function transferEthToWallet() {
+        //  alert('Sorry, The site is under maintenance. We will be back in 30 minutes.');
+        //     return false;
+        $('#transfer_eth_value').show();
+		$('#deposit_withdraw_error_msg').hide();
+        $('#inputModalLabel').text('Input ETH value to transfer');
+        $('#transfer_token_value').hide();
+        $('#btn_ok').attr('onclick', 'transferEthWalletOK()');
+        $('#inputModal').modal('show');
+    }
+
+    // transfer eth to the wallet
+    async function transferEthWalletOK() {
+        var amount = $('#transfer_eth_value').val();
+        if (amount == '' || amount <= 0) {
+            return false;
+        }
+
+        try {
+            var eth_balance = await balanceOfETH();
+            if ((amount * (10**18)) > eth_balance.toString()) {
+                console.log('not enough ether to transfer');
+				$('#deposit_withdraw_error_msg').text('not enough ether to transfer');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+                return false;
+            }
+			$('#inputModal').modal('hide');
+            var hash = await transferETH(Number(amount));
+            console.log('transfer eth hash: ' + hash);
+            var result = await confirmTransactionDeployed(hash);
+            
+            // if deposit success
+            if(result['status'] == '0x1') {
+                console.log('success');
+            } else {
+                // deposit failed
+				$('#inputModal').modal('show');
+				$('#deposit_withdraw_error_msg').text('deposit ether failed');
+				$('#deposit_withdraw_error_msg').css('color', 'red');
+				$('#deposit_withdraw_error_msg').css('display', 'block');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    } 
+
+    // start cycle button click
+    async function triggerStartCycle() {
+        try {
+            // var hash = await startCycle();
+            var hash = await startCycle();
+            
+            console.log('start cycle hash: ' + hash);
+            var result = await confirmTransactionDeployed(hash);
+            
+            // if deposit success
+            if(result['status'] == '0x1') {
+                console.log('cycle started');
+            } else {
+                // deposit failed
+                console.log('cyclestart failed');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    //  stop cycle button click
+    async function triggerStopCycle() {
+        try {
+            var hash = await stopCycle();
+            console.log('stop cycle hash: ' + hash);
+            var result = await confirmTransactionDeployed(hash);
+            
+            // if deposit success
+            if(result['status'] == '0x1') {
+                console.log('cycle stopped');
+            } else {
+                // deposit failed
+                console.log('stop failed');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    // get ready time button
+    async function getReadyTimeClick() {
+        try {
+            var ready = await getReadyTime();
+            console.log('time: ' + ready.toString());
+            /*var gaa = await getPendingUserCount();
+            console.log('pending: ' + gaa.toString());
+            var baa = await getActiveUserCount();
+            console.log('active: ' + baa.toString());*/
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // getPendingUserCount
+    function getPendingUserCount() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getPendingUserCount(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // getActiveUserCount
+    function getActiveUserCount() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getActiveUserCount(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // getActiveUserLists
+    function getActiveUserLists() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getActiveUserLists(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+    // get pending user lists
+    function getPendingUserlists() {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getPendingUserlists(function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+
+
+    // get profit
+    function getProfit(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getProfit(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+    
+    var get_ether_to_distribute = 0;
+    // 0.015 ether
+    var ether_value_amount = 1500000000000000;
+    // active user array
+    //var arr_activer = [];
+    // active user value
+    //var arr_active_val = [];
+
+    //get active user data
+    async function activeUserData() {
+        try {
+            var activers = await getActiveUserLists();
+            for(var i = 0; i < activers.length; i++) {
+                var profit = await getProfit(activers[i]);
+                var eth_val = (profit / 10**18) * ether_value_amount;
+                arr_activer.push(activers[i]);
+                arr_active_val.push(eth_val);
+            }
+            // distributeEth();
+        } catch(e) {
+            console.log(e);
+        }   
+    } 
+	
+	// deposit ether
+    function depositEth(amount) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.deposit({from: userAddress, gas: 300000, value: web3.toWei(amount,'ether')}, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }    
+    }
+	
+	//deposit ether button click
+	function depositETHClick() {
+		// deposit ether modal shows
+		$('#depositEthModalLabel').text('Input ETH amount to deposit');
+		$('#depositEthModal').modal('show');
+		$('#btn_deposit_ok').attr('onclick', 'depositEthOK()');
+	}
+	
+	// if admin deposit ether, then the value will 1
+	var is_deposit = 0;
+	// var deposit_amount = 0;
+	async function depositEthOK() {
+		
+		var amount = $('#depositEthvalue').val();
+		if (amount == '' || amount <= 0.1) {
+            alert('Input fit amount');
+			return false;
+		}
+		
+		try {
+            var hash = await depositEth(amount);
+            console.log('deposit ether hash: ' + hash);
+            var result = await confirmTransactionDeployed(hash);
+            
+            // if deposit success
+            if(result['status'] == '0x1') {
+				// deposit_amount = amount;
+                console.log('successfully deposit');
+				// var activers = await getActiveUserLists();
+				// for(var i = 0; i < activers.length; i++) {
+				// 	var profit = await getProfit(activers[i]);
+				// 	// var eth_val = (profit / 10**18) * (amount * 10**18);
+				// 	var eth_val = profit * amount;
+				// 	arr_activer.push(activers[i]);
+				// 	arr_active_val.push(eth_val);
+				// }
+				//setDistributeEth();
+				is_deposit = 1;
+            } else {
+                // deposit failed
+                console.log('deposit failed');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+	}
+	
+	// get total daily profit
+	// async function getDailyProfitSumForAllUsers() {
+	//	try {
+	//		var total_daily_profit = 0;
+    //        var activers = await getActiveUserLists();
+    //        for(var i = 0; i < activers.length; i++) {
+    //            var profit = await getProfit(activers[i]);
+    //            var eth_val = (profit / 10**18) * ether_value_amount;
+    //            total_daily_profit += eth_val;
+    //        }
+	//		console.log(total_daily_profit);
+	//		//depositEth(total_daily_profit);
+    //    } catch(e) {
+    //        console.log(e);
+    //    }   
+	//}
+	
+	var eth_usd_price = 0;
+	/* Etherscan */
+	function liveRate_ETHFromEtherscan()
+	{
+		$.ajax({
+			url: 'https://api.etherscan.io/api?module=stats&action=ethprice&apikey=XT1TNTQ6NWDKJDVB76FIGWQU2VAJHEKTYV',
+			type: 'POST',
+			dataType: 'json',
+			cache: false,
+			success: function(responce){
+				eth_usd_price = responce.result.ethusd;
+			}
+		});
+	}
+	
+    async function setDistributeEth() {
+        try {
+            var deposit_amount = prompt("Please enter the balance you deposited:", "");
+            if (deposit_amount < 0 || deposit_amount == 0) {
+                alert('deposit amount must be more than 0');
+                return false;
+            }
+            if (deposit_amount == null)
+                return false;
+            $('#conf_list').text('Loading...');
+            $('#distributeConfModal').modal('show');
+            // var arr_activer = [];
+            var arr_active_val = [];
+            var activers = await getActiveUserLists();
+            for(var i = 0; i < activers.length; i++) {
+                var profit = await getProfit(activers[i]);
+                // var eth_val = (profit / 10**18) * (amount * 10**18);
+                var eth_val = profit * (deposit_amount-0.2);
+                // arr_activer.push(activers[i]);
+                arr_active_val.push(eth_val);
+            }
+            
+            // make table view
+            var html = '<table style="margin: 0 auto;"><tr><th>Address</th><th>Balance</th></tr>';
+            for (var j = 0; j < activers.length; j++) {
+                html += '<tr><td style="padding:5px;text-align:center;border: 1px #333 solid;">';
+                html += activers[j];
+                html += '</td><td style="padding:5px;text-align:center;border: 1px #333 solid;">'
+                html += (arr_active_val[j] / 10**18);
+                html += '</td></tr>';
+            }
+            
+            html += '</table>'
+            $('#conf_list').html(html);
+
+            $('#distribute_ok').click(async function() {
+                var hash = await distributeEth(activers, arr_active_val);
+                console.log('distribute hash: ' + hash);
+                var result = await confirmTransactionDeployed(hash);
+                
+                // if deposit success
+                if(result['status'] == '0x1') {
+                    console.log('successfully distributed');
+                } else {
+                    // deposit failed
+                    console.log('distribute failed');
+                }    
+            });
+        } catch(e) {
+            console.log(e);
+        }
+    }
+    
+    //distribute ether
+    function distributeEth(arr_activer, arr_active_val) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.distributeEth(arr_activer, arr_active_val, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }  
+    }   
+    
+    // save profit data to Mysql database
+    async function seveToMysqlDatabase() {
+        // if user is admin		
+		if((userAddress.toLowerCase()).toString() == '0xb5869587ca6e239345f75c28d3b8ee23da812759' || (userAddress.toLowerCase()).toString() == '0xd6e2d23eeb8677c49dbeae5ba2b3ec188b4dc58e') {
+            console.log('yes');
+        } else {
+            return false;
+        }
+        var total_invested_token = await getTotalEvotPerCycle();
+        if (total_invested_token == 0) return false;
+        var deposit_amount = prompt("Please enter the balance you deposited:", "");
+        if (deposit_amount < 0 ) {
+            alert('deposit amount must be more than 0');
+            return false;
+        }
+        if (deposit_amount == "" )
+            return false;
+        if (deposit_amount == null )
+            return false;
+        
+        var daily_profit = (deposit_amount * eth_usd_price) / (0.55 * total_invested_token);
+        // daily_profit, deposit_amount * eth_usd_price, total_invested_token * 0.55
+        
+        $.ajax({
+            url: 'https://www.evoai.network:7000/insertProfit',
+            type: 'POST',
+            data: {daily_profit: daily_profit * 100, deposit_amount: deposit_amount*eth_usd_price, total_invested_token: total_invested_token*0.55},
+            success: function(responce){
+                console.log(responce);
+            },
+            error: function(e) {
+                console.log('database insert error');
+                console.log(e);
+            }
+        });
+        //var activers = ["0x2c4b2d9d32eacea05cfd24231991a6d9a026cfb6", "0xeeb1bfb5cb8838db4f6e4f602ef66c8798f182da", "0x54604708ebab4871cfa9eec44ab6b20f014d2e11", "0xba507528a968ca351161438132272ad3b48a0f62", "0x19308403a408e18516b8a8fc4eae342b8966e7e6", "0xf4620ad62310ad0b6a975f2e555aa9a56975bd39", "0x35779f1d6f03bd88f7fdec6924c33b3f3d45a688", "0xa060c57b0dd736403210775210998c346c4f2a58", "0x79ede314367124506903c10649a487cc6837ab36", "0x00efaeb5a8875634517884893913dd1688691dcd", "0x17890801e3f3cdd50f50cda75aa200e3ebafa145", "0xebb755198f221a26ead1853b86a82a272d353e7e", "0xe3d1aea4f943c451e98e6d645bad16f332d3ae47", "0xb43619877e2778dca6ec0e15a7d109fe98eb1f7e", "0xdbacecd3aa626e9b5da860bc820086c8fe004425", "0xee2bbc680119de9edecf97a0f277d04cb0025c39", "0x97948dc3a3e88290127413494064b5a9ccee333c", "0x6b9e9e10abb661b56b0602817c3f4bcd7f4d32c2", "0xd514849c91824882a6c9e93aac955ecd71e3625e", "0xd0852186ee416bfd71feb2a84b23b263e166b7cc", "0xfeb1beb653b1606ce30dcaf96824372d61cc73a7", "0x008ca4f1ba79d1a265617c6206d7884ee8108a78", "0x85aa567e16606d0a028d0ffee51ab7b228bb812d", "0x0fded4d3f86e60180cf144c5b63eabcd7fd97683", "0xb5869587ca6e239345f75c28d3b8ee23da812759", "0x5e1d8d4e5a19f7fc4f9c479e31990136caf3f427", "0xd377c7437c601bed9ffc4211ccdeaa69c6c115f2", "0x7e610486689f894169833b75f81fe986271a6916", "0xae99806301b52241a85353da44667d4ca881a75e", "0xd6e2d23eeb8677c49dbeae5ba2b3ec188b4dc58e", "0x96cf789d294df1f3ca8dbe85811b062c334fb194", "0x14968faf0fa18ad42809bee15626b3a07afa6dbe", "0x79ca719893ec1d72ad77b0f90f4141c1b6353514", "0xa58f0f907c1a004c0d9a89636bf370fba6ed898d", "0x087b961c29efd8dc93abe9c8fa392739a3ad8cf6"]
+        //alert('after console check you can');
+        //console.log(activers);
+        //var arr_active_val = [105774728416237840, 78273299028016000, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 52887364208118920, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840, 105774728416237840];
+        //console.log(arr_active_val);
+        // for (var i = 0; i < activers.length; i++) {
+        //     $.ajax({
+        //         url: 'https://www.evoai.network:7000/insertInvestorProfit',
+        //         type: 'POST',
+        //         data: {address: activers[i], umail: 'a@a', eth_val: arr_active_val / 10**18},
+        //         success: function(responce){
+        //             console.log(responce);
+        //         },
+        //         error: function(e) {
+        //             console.log('database insert error');
+        //             console.log(e);
+        //         }
+        //     });
+        // }
+    }
+	// get active token balance by user
+    function balanceOfActiveTokenByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.balanceOfActiveToken(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    var total_active_tokens_per_cycle = 0;
+    // get all tokens per cycle
+    async function getTotalEvotPerCycle() {
+        try {
+            var activers = await getActiveUserLists();
+            for(var i = 0; i < activers.length; i++) {
+                var active = await balanceOfActiveTokenByUser(activers[i]);
+                active = (active.toString() / 10**18);
+                total_active_tokens_per_cycle += active;   
+            }
+			return total_active_tokens_per_cycle;
+        } catch(e) {
+            console.log(e);
+        }
+    }
+	
+    // get the total invest profit
+    function getTotalProfitByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getTotalProfit(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }   
+    }
+
+    //get active user address and invested value
+    async function getActiveUserData() {
+        try {
+            $('#viewInvestorsModalLabel').text('Active Investors');
+            $('#investors_list').html('Loading...');
+            $('#viewInvestorsModal').modal('show');
+
+            var activers = await getActiveUserLists();
+            var bals = [];
+            for(var i = 0; i < activers.length; i++) {
+                var active = (await balanceOfActiveTokenByUser(activers[i])).toString() / 10**18;
+                //active = (active.toString() / 10**18);
+                bals.push(active);
+            }
+            if(bals.length == 0) {
+                $('#investors_list').html('No investors');
+                return false;
+            }
+            // make table view
+            var html = '<table style="margin: 0 auto;"><tr><th>Address</th><th>Balance</th></tr>';
+            var total_balance = 0;
+            var k = 0;
+            for (var j = 0; j < activers.length; j++) {
+                total_balance += bals[j];
+                html += '<tr><td style="padding:5px;text-align:center;border: 1px #333 solid;">';
+                html += activers[j];
+                html += '</td><td style="padding:5px;text-align:center;border: 1px #333 solid;">'
+                html += bals[j];
+                html += '</td></tr>';
+                k++;
+            }
+            html += '<tr><td style="text-align: right;padding-right: 20px;font-weight: bold;">Total: ( '+ k +' )</td><td style="font-weight: bold;">';
+            html += total_balance;
+            html += '</td></tr></table>'
+            $('#investors_list').html(html);
+        } catch(e) {
+            console.log(e);
+        }   
+    }
+
+    //get pending user address and invested value
+    async function getPendingUserData() {
+        try {
+            $('#viewInvestorsModalLabel').text('Pending Investors');
+            $('#investors_list').html('Loading...');
+            $('#viewInvestorsModal').modal('show');
+            var pendings = await getPendingUserlists();
+            var bals = [];
+            for(var i = 0; i < pendings.length; i++) {
+                var pending = (await balanceOfPendingTokenByUser(pendings[i])).toString() / 10**18;
+                bals.push(pending);
+            }
+            if(bals.length == 0) {
+                $('#investors_list').html('No investors');
+                return false;
+            }
+            // make table view
+            var html = '<table style="margin: 0 auto;"><tr><th>Address</th><th>Balance</th></tr>';
+            var total_balance = 0;
+            var k = 0;
+            for (var j = 0; j < pendings.length; j++) {
+                total_balance += bals[j];
+                html += '<tr><td style="padding:5px;text-align:center;border: 1px #333 solid;">';
+                html += pendings[j];
+                html += '</td><td style="padding:5px;text-align:center;border: 1px #333 solid;">'
+                html += bals[j];
+                html += '</td></tr>';
+                k++;
+            }
+            html += '<tr><td style="text-align: right;padding-right: 20px;font-weight: bold;">Total: ( '+ k +' )</td><td style="font-weight: bold;">';
+            html += total_balance;
+            html += '</td></tr></table>'
+            $('#investors_list').html(html);
+        } catch(e) {
+            console.log(e);
+        }   
+    }
+
+    // get auto invest status by user address
+    function getAutoInvestStatusByUser(user) {
+        try {
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.getAutoInvestStatus(user, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // set invested token by admin
+    function setTotalInvestedToken() {
+        try {
+            var user = prompt("input user address:", "");
+            var amount = prompt("input amount:", "");
+            if(user == '' || amount == '') return false;
+            if(!confirm(user + ':' + amount)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setTotalInvestedToken(user, web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // set ether balance by admin
+    function setBalanceOfETH() {
+        try {
+             var user = prompt("input user address:", "");
+            var amount = prompt("input amount:", "");
+            if(user == '' || amount == '') return false;
+            if(!confirm(user + ':' + amount)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setBalanceOfETH(user, web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
+    //set active token balance by admin
+    function setTotalProfit() {
+        try {
+             var user = prompt("input user address:", "");
+            var amount = prompt("input amount:", "");
+            if(user == '' || amount == '') return false;
+            if(!confirm(user + ':' + amount)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setTotalProfit(user, web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // set pending token balance by admin
+    function setBalanceOfPendingToken() {
+        try {
+             var user = prompt("input user address:", "");
+            var amount = prompt("input amount:", "1000");
+            if(user == '' || amount == '') return false;
+            if(!confirm(user + ':' + amount)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setBalanceOfPendingToken(user, web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //set active token balance by admin
+    function setBalanceOfActiveToken() {
+        try {
+             var user = prompt("input user address:", "");
+            var amount = prompt("input amount:", "");
+            if(user == '' || amount == '') return false;
+            if(!confirm(user + ':' + amount)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setBalanceOfActiveToken(user, web3.toWei(amount,'ether'), function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //toggle the auto invest status by admin
+    function setAutoInvestByAdmin() {
+        try {
+            var user = prompt("input user address:", "");
+            if(user == '') return false;
+            if(!confirm(user)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.setAutoInvestByAdmin(user, true, function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //make pending user list
+    function addPendingUserListArr() {
+        try {
+            var user = prompt("input user address:", "");
+            if(user == '') return false;
+            if(!confirm(user)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.addPendingUserListArr(user,function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //make active user list
+    function addActiveUserListArr() {
+        try {
+            var user = prompt("input user address:", "");
+            if(user == '') return false;
+            if(!confirm(user)) return false;
+            return new Promise((resolve, reject) => {
+                evabotContractInstance.addActiveUserListArr(user,function(e, r) {
+                    if (e) {
+                        reject(e);
+                    }
+                    resolve(r);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // function setFeeContractAddress() {
+    //     try {
+    //         return new Promise((resolve, reject) => {
+    //             evabotContractInstance.setFeeContractAddress('', function(e, r) {
+    //                 if (e) {
+    //                     reject(e);
+    //                 }
+    //                 resolve(r);
+    //             });
+    //         });
+    //     } catch (e) {
+    //         console.log(e);
+    //     } 
+    // }
+</script>

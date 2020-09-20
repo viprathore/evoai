@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->         
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-12 main-dashcontent" id="main">  						
+						<h2>
+							<span class="collapse in hidden-xs">EVOBOT</span>
+						</h2>
+						<!-- added by killer  -->
+
+						<!-- Wallet address -->
+						<div class = "row clearfix text-center ">
+							<div class = evobot-title>
+								<span class="font-purple font-23">TOP ARBITRAGE OPPORTUNITIES</span>
+							</div>
+							<div class = "evobot-content col-md-12 col-sm-6 col-xs-12 mb-20 mt-20"  >								
+								<div class = " border-0 list-title mb-30">
+									<div class = "pank width-10">RANK</div>
+									<div class = "updated width-14">UPDATED</div>
+									<div class = "coinpair width-14">COINPAIR</div>
+									<div class = "exchainges1 width-10">EXCHANGES1</div>
+									<div class = "price1 width-14">PRICE1</div>
+									<div class = "exchainges2 width-10">EXCHANGE2</div>
+									<div class = "price2 width-14">PRICE 2</div>
+									<div class = "arb width-14">ARB %</div>
+									<div class = "clearfix"></div>
+								</div>
+									<div class = "content-list text-center " id = "style-1">
+									<% for (var i = 1; i < 16; i ++)  { %>
+									<div class = "one-block mt-20" id = "one-block<%= i %>">
+										<div class = "pank width-10">#<%= i %></div>
+										<div class = "updated width-14">19:34:17</div>
+										<div class = "coinpair width-14">EDIV/BNB</div>
+										<div class = "exchainges1 width-10">
+											<img src="/webroot/frontend/images/icon-wallet.png">
+										</div>
+										<div class = "price1 width-14">0.040466</div>
+										<div class = "exchainges2 width-10">
+											<img src="/webroot/frontend/images/icon-support.png">
+										</div>
+										<div class = "price2 width-14">0.040466</div>
+										<div class = "arb width-14">3.778%</div>
+										<div class = "clearfix"></div>
+									</div>
+									<% } %>																	
+								</div>
+							</div>
+							<div class = "evobot-account clearfix">
+								<div class = "col-md-5-5 col-sm-6  border-0 mt-10">
+									<div class = "col-md-4 border-0 mt-10">
+										<span class="font-purple font-23">AMOUNT INVESTED</span>
+									</div>
+									<div class = "col-md-7 border-0 mt-10">
+											<input type="text" readonly="" value="" class="white-bkground  height-50">
+									</div>
+								</div>
+								<div class = "col-md-5-5 col-sm-6  border-0 mt-10 float-right">
+									<div class = "col-md-4  border-0 mt-10 ">
+											<span class="font-purple font-23">TOTAL PROFIT</span>
+										</div>
+										<div class = "col-md-8  border-0 total-profit">
+											<h2>0.0000000USD</h2>
+										</div>
+								</div>
+								<div class= "clarfix"></div>
+							</div>
+						</div>					
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<% include partials/metamask %>		
+	<% include partials/config %>
+	<% include partials/evabot_contract_provider %>		
+	<script>
+		preloader();
+	</script>
+</body>
+</html>

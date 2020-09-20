@@ -1,0 +1,81 @@
+<script>
+var Web3 = require('web3');
+
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      try {
+        await ethereum.enable();
+        web3.version.getNetwork((err, netId) => {
+        switch (netId) {
+          //case '3':
+           case '1':
+            console.log('This is mainnet');
+            if (web3.eth.accounts[0])
+              $('#wallet_addr').text(web3.eth.accounts[0]);
+            else 
+              $('#wallet_addr').text('Please login to the Ethereum mainnet on Metamask.');
+            break;
+              default:
+                // You are connected to the Ethereum testnet. Please connect to the Ethereum mainnet.
+                $('.modal-body').text('You are connected to the Ethereum testnet. Please connect to the Ethereum mainnet.');
+                $('#exampleModal').modal('show');
+                $('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.')
+            }
+          });
+          let account = web3.eth.accounts[0];
+          
+          setInterval(function() {
+            if (web3.eth.accounts[0] !== account) {
+              account = web3.eth.accounts[0];
+              window.location.reload();
+            }
+          }, 100);
+      } catch(e) {
+        console.log(e);
+      }
+    } else if(window.web3) {
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        try {
+          if (typeof web3 !== 'undefined') {
+            // Use Mist/MetaMask's provider
+            window.web3 = new Web3(web3.currentProvider);
+          } else {
+            console.log('No web3? You should consider trying MetaMask!');
+          }
+          web3.version.getNetwork((err, netId) => {
+            switch (netId) {
+              //case '3':
+               case '1':
+                console.log('This is mainnet');
+                
+                if (web3.eth.accounts[0])
+                  $('#wallet_addr').text(web3.eth.accounts[0]);
+                else 
+                  $('#wallet_addr').text('Please login to the Ethereum mainnet on Metamask.');
+                break;
+              default:
+                // You are connected to the Ethereum testnet. Please connect to the Ethereum mainnet.
+                $('.modal-body').text('You are connected to the Ethereum testnet. Please connect to the Ethereum mainnet.');
+                $('#exampleModal').modal('show');
+                $('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.')
+            }
+          });
+          let account = web3.eth.accounts[0];
+          
+          setInterval(function() {
+            if (web3.eth.accounts[0] !== account) {
+              account = web3.eth.accounts[0];
+              window.location.reload();
+            }
+          }, 100);
+        } catch (e) {
+          $('.modal-body').text('Please connect to the Ethereum mainnet on Metamask.');
+          $('#exampleModal').modal('show');
+          $('#wallet_addr').text('Please connect to the Ethereum mainnet on Metamask.')
+          console.log('Web3 does not exist');
+        }
+    }
+    
+  });
+</script>

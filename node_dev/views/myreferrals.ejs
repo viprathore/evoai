@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+	<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="100" class="home-page">
+		<!--header -->
+		<% include partials/header %> 
+		<!--//-->      
+		<section class="dashboard-section">	
+			<div class="wrapper">
+				<div class="row row-offcanvas row-offcanvas-left">
+					<!-- sidebar -->
+					<div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+						<% include partials/sidebar %>								
+					</div>
+					<!-- /sidebar -->
+					<!-- main right col -->
+					<div class="column col-sm-9 col-xs-11 main-dashcontent" id="main">    <h2 class="pro-heading"><%= page %></h2>
+						<div class="row clearfix mb-70">
+							<div class="ref-sec col-md-6 col-sm-6">							
+							<label>Referral Link:</label><br>							
+								<div class="input-group">
+				                    <input type="text" onclick="copyTextAdd();" class="form-control walletAddress" value="http://localhost/evoai/registration?e=<%= links %>" placeholder="https://www.evoai.network/">
+				                    <span onclick="copyTextAdd();" class="input-group-addon">Copy</span>
+			                	</div>
+							
+							
+							</div>
+							<div class="col-md-6 col-sm-6">
+								<h3>Total referral Bonus : 0 : 00 EVOT</h3>
+							</div>
+						</div>
+						
+						<!-- Referral User -->
+						<div class="row clearfix">
+							<div class="col-md-6 col-sm-8">
+								<div class="table-responsive">
+									<table class="table refusers">
+										<tr>
+											<td align="center"><h2>Referral user</h2></td>
+										</tr>
+										<tr>
+											<td align="center"><h2>0.0</h2></td>
+										</tr>
+										<tr>
+											<td align="center"><h2>Referrals</h2></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							
+						</div>
+						<!--//-->
+						<!-- userlist-->
+						<div class="row clearfix" id="Evt-calc">
+							<div class="col-md-12">
+								<h2>Displaying I User</h2>
+								<div class="table-responsive mt-20">
+									<table class="table table-bordered users-list">
+										<thead>
+											<tr>
+												<th align="center">NAME</th>
+												<th align="center">USERNAME</th>
+												<th align="center">EMAIL</th>
+												<th align="center">REFERRAL BONUS</th>
+											</tr>
+										</thead>
+										<tbody>
+											<%
+												if(referral_list != '')
+												{
+													for(var i=0; i < referral_list.length; i++)
+													{
+														%>
+															<tr>
+																<td>
+																	<%= referral_list[i].username %>
+																</td>
+																<td>
+																	<%= referral_list[i].email %>
+																</td>
+																<td>
+																	<%= referral_list[i].email %>
+																</td>
+																<td>
+																	0.00
+																</td>
+															</tr>
+														<%
+													}
+												}
+												else
+												{	
+													%>
+														<tr>
+															<td colspan="4">
+																No record available
+															</td>
+														</tr>
+													<%
+												}
+											%>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+						<!--//-->
+					</div>
+				</div>
+			</div>
+		</section>
+	<% include partials/footer %>
+	<% include partials/script %>	
+	<script>
+		preloader();
+		
+		function getETHvalue(eth_add)
+		{
+			$.ajax({
+				url: 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x5dE805154A24Cb824Ea70F9025527f35FaCD73a1&address="'+eth_add+'"&tag=latest&apikey=XT1TNTQ6NWDKJDVB76FIGWQU2VAJHEKTYV',
+				type: 'POST',
+				dataType: 'json',
+				cache: false,
+				success: function(responce){ 
+					return responce.result;
+				}
+			});
+		}
+	</script>
+</body>
+</html>

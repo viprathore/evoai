@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include partials/head %> 
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <header class="main-header">
+		<% include partials/header %>         
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+	  <% include partials/sidebar %>       
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				Evot Bonus value
+				<small>Control panel</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="/admin"><i class="fa fa-dashboard"></i>Dashboard</a>
+				</li>
+				<li class="active">Bonus</li>
+			</ol>
+		</section>
+        <!-- Main content -->
+        <section class="content">                
+			<div id="content">
+				<div class="row">				
+					<div class="col-md-12 column">				
+						<div class="box box-primary">
+							<div class="box-header">
+								<h3 class="box-title">Evot Bonus value</h3> 
+							</div>							
+							<form action="/admin/evot_bonu" method="post" >
+								<div class="box-body">
+									<div class="row">
+										<div class="form-group col-md-5">
+											<div class="input text">
+												<label>Evot value</label>
+												<input name="evot_value" class="form-control number-only"  type="text" id="evot_value" value="<%= evot_value %>">												
+											</div>
+										</div>
+										<div class="form-group col-md-5">
+											<div class="input text">
+												<label>Bonus value</label>
+												<input name="bonus" class="form-control number-only" type="text" id="bonus" value="<%= bonus %>">												
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-md-5">
+											<div class="input text">
+												<label>&nbsp;</label>
+												<button class="btn btn-success btn-sm" type="submit" name="Update" value="Update" >Update</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+      </div><!-- /.content-wrapper -->
+      <% include partials/footer %> 
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+    <% include partials/script %> 	
+  </body>
+</html>
